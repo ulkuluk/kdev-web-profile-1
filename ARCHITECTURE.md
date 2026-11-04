@@ -1,124 +1,132 @@
-# Architecture & Maintenance Guide
+# Architecture & Maintenance Guide (v2)
 
 ## Principles
 
 1. **Separation of concerns:** Content never lives in components. Components never read `process.env`.
 2. **Deploy-agnostic:** Works with `npm run build` anywhere (Node, static host, Docker). No vendor lock-in.
-3. **Single source of design truth:** `design-system/kdev/MASTER.md` plus documented overrides in `design-system/kdev/pages/overrides.md`.
-4. **Honesty rules:** We are a new team of 8. Allowed factual numbers: 8 specialists, 3 service lines, 1 delivered MVP. Never claim "years of experience", fake ratings, or "live" clients.
+3. **Single source of design truth:** `design-system/kdev/MASTER.md` defines "The Engineering Spec" visual identity tokens and component specifications.
+4. **Honesty rules:** We are a dedicated team of 8 specialists. Allowed factual numbers: 8 specialists, 3 service lines, 1 delivered MVP (Petepete). Never claim "years of experience", fake ratings, fake logos, or that a paused project is live.
+5. **No unwritten code:** Scope, milestones, and price are agreed in writing under a binding MoU before any development begins.
 
-## Folder structure & layering
+---
+
+## Visual Identity & Tokens (v2 — The Engineering Spec)
+
+- **Canvas & Palette:**
+  - Background: Warm architectural drafting paper (`#F4F3EF`)
+  - Foreground / Ink: Deep carbon drafting ink (`#12151A`)
+  - Accent: Verdigris teal (`#0F766E`, AAA >7.1:1 contrast against paper)
+  - Surface: Crisp white drafting sheet (`#FFFFFF`)
+  - Dark Band: High-contrast ink band (`#12151A`) behind the Petepete media slot on Home
+- **Typography:**
+  - Display / Headings: `Epilogue` (Google Font via `next/font/google`, weights 600, 700, 800)
+  - Body Text: `Source Serif 4` (Google Font via `next/font/google`, weights 400, 600)
+  - Technical & UI Monospace: `IBM Plex Mono` (Google Font via `next/font/google`, weights 400, 500, 600)
+- **Signature UI:**
+  - Signed Scope MoU Docket with clause inspection and verified covenant badges (§ 01.1–01.3).
+  - Subtle interactive state animations respecting `prefers-reduced-motion`.
+  - Precision device frames and terminal/code telemetry snippets.
+
+---
+
+## MDX Approach Justification
+
+Case studies are authored as MDX documents in `src/content/work/<slug>.mdx`.
+We use `next-mdx-remote/rsc` for MDX rendering:
+
+1. **App Router Native:** Runs entirely within React Server Components. MDX compilation happens during static page generation (`npm run build`), producing zero client-side compiler overhead.
+2. **Bundler Agnostic:** Does not require complex webpack or Turbopack loader plugins in `next.config.ts`.
+3. **Strict Build-Time Validation:** Frontmatter is parsed via `yaml` and validated against Zod (`caseStudyFrontmatterSchema`) before rendering. Invalid frontmatter fails the build immediately.
+4. **Rich Custom Components:** Exposes `<Figure>`, `<Video>`, `<Gallery>`, `<Timeline>`, `<Callout>`, `<DeviceFrame>`, and `<Stat>`.
+
+---
+
+## Folder Structure & Layering
 
 ```
 src/
-├── app/                  # Next.js App Router layer (composition, metadata, static routes)
-│   ├── layout.tsx        # HTML shell, fonts, JSON-LD Organization schema, skip link
-│   ├── page.tsx          # Composes sections in order, passes typed content props
-│   ├── globals.css       # Tailwind @theme tokens, base styles, glassmorphism utilities
-│   ├── sitemap.ts        # Static sitemap
-│   ├── robots.ts         # Static robots.txt
-│   ├── icon.svg          # Favicon
-│   └── fonts/            # Self-hosted WOFF2 variable fonts
+├── app/                       # Next.js App Router layer (multi-page static routes)
+│   ├── layout.tsx             # HTML shell, fonts (Epilogue, Source Serif 4, IBM Plex Mono), JSON-LD
+│   ├── page.tsx               # Home: Hero, Pillars, Featured Work, Engagement Flow, CTA Banner
+│   ├── globals.css            # Tailwind @theme tokens, drafting grid, hard shadows
+│   ├── sitemap.ts             # Static sitemap including all /work/<slug> routes
+│   ├── robots.ts              # Robots.txt
+│   ├── icon.svg               # Architectural favicon
+│   ├── services/page.tsx      # Services & MoU Engagement Protocol + FAQ
+│   ├── work/page.tsx          # Case study portfolio index + "Your project could be next"
+│   ├── work/[slug]/page.tsx   # Dynamic case study page (MDX Remote Server Component)
+│   ├── about/page.tsx         # 8-specialist team, operating principles, toolbox
+│   └── contact/page.tsx       # Startup MVP brief form, direct WhatsApp, and email
 │
-├── content/              # Content layer: typed, validated at import time via Zod
-│   ├── _shared.ts        # Shared Zod primitives (roles, icon names, sectionIds)
-│   ├── site.ts           # Company metadata, contact endpoints, socials
-│   ├── nav.ts            # Header/footer nav items and a11y labels
-│   ├── hero.ts           # Headline, subheadline, CTAs, factual numbers
-│   ├── audiences.ts      # Startups, SMEs (UMKM), Mid-sized companies
-│   ├── services.ts       # Web, Custom Systems, Mobile
-│   ├── projects.ts       # Featured case study (creator support platform)
-│   ├── process.ts        # 6-step delivery workflow + role ownership mapping
-│   ├── team.ts           # 8 specialists (roles, names, initials, socials)
-│   ├── stack.ts          # Grouped technology chips
-│   ├── next.ts           # "Building our own products" teaser
-│   ├── faq.ts            # 6 non-committal FAQ items (marked // REVIEW)
-│   ├── contact.ts        # Form labels, error copy, select options
-│   └── index.ts          # Barrel re-export + assertContentConsistency()
+├── content/                   # Content layer: typed and validated at build time via Zod
+│   ├── _shared.ts             # Shared Zod primitives (roles, routes, sectionIds)
+│   ├── site.ts                # Company metadata, contact endpoints, socials
+│   ├── nav.ts                 # Multi-page header/footer nav items and a11y labels
+│   ├── hero.ts                # Headline, subheadline, CTAs, signed docket clauses
+│   ├── pillars.ts             # 4 operational commitments
+│   ├── services.ts            # MVP offer, phase deliverables, pricing principles, capabilities
+│   ├── about.ts               # Principles, team composition, toolbox
+│   ├── contact.ts             # Startup brief fields, stages, timelines, budget options
+│   ├── faq.ts                 # 6 non-committal FAQ items (marked // REVIEW)
+│   ├── work.ts                # Case study frontmatter schema, MDX file parser & loader
+│   ├── work/<slug>.mdx        # Narrative case studies (Petepete seed)
+│   └── index.ts               # Barrel re-export + assertContentConsistency()
 │
 ├── components/
-│   ├── ui/               # Reusable, content-agnostic primitives
-│   │   ├── button.tsx    # Button and Link variant with accessible focus rings
-│   │   ├── badge.tsx     # Neutral, primary, and accent pill badges
-│   │   ├── card.tsx      # Standard card with optional interactive hover
-│   │   ├── container.tsx # Max-width responsive container (max-w-content)
-│   │   ├── field.tsx     # Form field wrapper with linked label & inline error
-│   │   ├── icon.tsx      # Decorative Lucide icon mapped through lib/icons
-│   │   ├── reveal.tsx    # Scroll reveal using motion (respects prefers-reduced-motion)
-│   │   └── section.tsx   # Consistent vertical rhythm, h2, eyebrow, anchor ID
-│   │
-│   ├── layout/           # Global chrome
-│   │   ├── header.tsx    # Sticky glass header with desktop nav & CTA
-│   │   ├── mobile-nav.tsx# Keyboard-navigable hamburger drawer
-│   │   ├── footer.tsx    # Wordmark, nav links, copyright, optional socials
-│   │   └── wordmark.tsx  # SVG mark + mono brand text
-│   │
-│   └── sections/         # Feature sections (one folder per section)
-│       ├── hero/
-│       ├── audiences/
-│       ├── services/
-│       ├── case-study/
-│       ├── process/
-│       ├── team/
-│       ├── stack/
-│       ├── next/
-│       ├── faq/
-│       └── contact/
+│   ├── ui/                    # Content-agnostic, reusable primitives (Button, Card, Section, Badge)
+│   ├── mdx/                   # Case study MDX components (Figure, Video, Timeline, DeviceFrame)
+│   ├── layout/                # Global chrome (Header, MobileNav, Footer, Wordmark)
+│   └── sections/              # Page feature sections
+│       ├── hero/              # Hero, SignedScopeDocket
+│       ├── pillars/           # Pillars strip
+│       ├── featured-work/     # Featured case study display
+│       ├── engagement-flow/   # 5-step delivery process with MoU anchor
+│       ├── cta-banner/        # High-contrast bottom CTA
+│       ├── services/          # ServicesOverview (offer, inclusions, phases, capabilities, FAQ)
+│       └── contact/           # Startup brief contact form
 │
-└── lib/                  # Shared utilities
-    ├── cn.ts             # clsx + twMerge helper
-    ├── env.ts            # The ONLY file that reads process.env
-    ├── icons.ts          # Named Lucide icon registry
-    ├── json-ld.ts        # Schema.org Organization generator
-    └── form/             # Contact form validation & submission
-        ├── validate.ts   # Pure validation logic (Zod-free runtime)
-        └── submit.ts     # Formspree / Web3Forms / mailto submitter
+└── lib/                       # Shared utilities
+    ├── cn.ts                  # clsx + twMerge helper
+    ├── env.ts                 # The ONLY file that reads process.env
+    ├── icons.ts               # Named Lucide icon registry
+    ├── json-ld.ts             # Schema.org Organization generator
+    └── form/                  # Pure validation & submission helpers
 ```
+
+---
 
 ## How-to Recipes
 
-### 1. How do I add or change a team member?
+### 1. How do I add a new case study?
 
-1. Open `src/content/team.ts`.
-2. Update the `members` array. Every entry requires `role`, `name`, `github` (URL or `""`), and `linkedin` (URL or `""`).
-3. If changing the team size, update the Zod schema length (`.length(8)`) and the cross-file check in `src/content/index.ts`.
-4. Run `npm test` and `npm run check:content`.
+Follow `docs/ADDING-WORK.md`:
 
-### 2. How do I add a new service or edit existing ones?
+1. Drop screenshots into `media-source/work/<slug>/`.
+2. Run `npm run media` to optimize images to WebP/AVIF in `public/work/<slug>/`.
+3. Create `src/content/work/<slug>.mdx` with complete frontmatter and body narrative.
+4. The project automatically appears on `/work`, `/sitemap.xml`, and `/work/<slug>`.
 
-1. Open `src/content/services.ts`.
-2. Add or edit an item in `services.items`. Each item has `id`, `title`, `icon` (must be in `src/lib/icons.ts`), `summary`, `deliverables`, and `useCases`.
-3. The layout automatically renders the first service as the wide hero card in the bento grid.
+### 2. How do I optimize media assets?
 
-### 3. How do I add a case study?
+Run:
 
-1. Open `src/content/projects.ts`.
-2. Add a new item to `projects.items`.
-3. Fill in `challenge`, `solution`, `features`, `stack`, `role`, and `outcome`.
-4. When real screenshots become available, place images in `public/projects/<slug>-1.png` and update `screenshots: [{ alt: "...", src: "/projects/<slug>-1.png" }]`.
-5. Remember the honesty rule: never claim a paused MVP is live, and never disclose client financials.
+```bash
+npm run media
+```
 
-### 4. How do I change brand colors or fonts?
+Original files in `media-source/work/<slug>/` are converted into WebP and AVIF formats in `public/work/<slug>/` with dimensions written to `manifest.json`.
 
-1. Open `src/app/globals.css`.
-2. Update the CSS variables under `@theme`:
-   - `--color-primary`: Main brand color (currently Trust Blue `#2563EB`)
-   - `--color-accent`: High-contrast CTA color (currently `#C2410C`, overrides MASTER `#EA580C`)
-   - `--color-background`, `--color-card`, etc.
-3. If changing fonts, replace the WOFF2 files in `src/app/fonts/` and update the `localFont` imports in `src/app/layout.tsx`.
-4. Document any deliberate deviation from `design-system/kdev/MASTER.md` in `design-system/kdev/pages/overrides.md`.
+### 3. How do I run the content placeholder and media check?
 
-### 5. How do I add a new section?
+Run:
 
-1. Define the section ID in `src/content/_shared.ts` under `sectionIds`.
-2. Create the content file `src/content/<section>.ts` with its Zod schema, and export it from `src/content/index.ts`.
-3. Create the component under `src/components/sections/<section>/<section>.tsx` using `<Section id={...}>`.
-4. Add the component to `src/app/page.tsx`.
-5. If the section should appear in the navigation, add it to `src/content/nav.ts`.
+```bash
+npm run check:content
+```
 
-### 6. How do I swap the content layer for a headless CMS or i18n?
+This fails if any `TODO:` strings, `kdev.example`, missing media files, or oversized files (> 8 MB) exist.
+_(Note: Not hooked into `npm run build` so development can proceed smoothly)._
 
-1. Every section component receives its data strictly via props typed with `z.infer<typeof ...Schema>`.
-2. Replace the static objects in `src/content/*.ts` with async fetchers that query your CMS and validate the response against the existing Zod schemas (`await schema.parseAsync(await res.json())`).
-3. Make `src/app/page.tsx` async and pass the fetched content into the section components.
-4. Component JSX remains 100% untouched.
+### 4. How do I change design tokens?
+
+Update `design-system/kdev/MASTER.md` and `src/app/globals.css` under `@theme`. Never hard-code hex colors or magic numbers inside component files.

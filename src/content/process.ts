@@ -5,64 +5,76 @@ export const processSchema = z.object({
   eyebrow: z.string(),
   title: z.string(),
   description: z.string(),
+  cta: z.object({ label: z.string(), href: z.string() }),
   ownerLabel: z.string(),
   steps: z
     .array(
       z.object({
         id: z.string(),
+        stepNum: z.string(),
         title: z.string(),
         summary: z.string(),
+        isAnchor: z.boolean().default(false),
         owners: z.array(roleSchema).min(1),
       }),
     )
-    .length(6),
+    .min(4)
+    .max(6),
 });
 export type WorkflowContent = z.infer<typeof processSchema>;
 
 export const workflow = processSchema.parse({
-  eyebrow: "How we work",
-  title: "Six steps, each with an owner",
-  description: "You always know what is happening and who is responsible for it.",
-  ownerLabel: "Led by",
+  eyebrow: "Engagement Protocol",
+  title: "From written scope to production handover",
+  description:
+    "We do not sell open-ended developer hours. Every engagement follows a disciplined sequence with signed verification criteria.",
+  cta: { label: "Explore full engagement flow", href: "/services" },
+  ownerLabel: "Responsible",
   steps: [
     {
-      id: "discovery",
-      title: "Discovery",
-      summary: "We learn your goals, users and constraints, then agree on scope and priorities.",
-      owners: ["Project Manager", "UI/UX Designer"],
+      id: "scope-mou",
+      stepNum: "01",
+      title: "Written Scope & MoU",
+      summary:
+        "We draft feature boundaries, milestones, and fixed delivery pricing into a binding MoU. Both sides sign before any code begins.",
+      isAnchor: true,
+      owners: ["Project Manager"],
     },
     {
       id: "design",
-      title: "Design",
+      stepNum: "02",
+      title: "Interactive UI/UX",
       summary:
-        "User flows and interface designs you can review and react to before code is written.",
+        "High-fidelity component layouts and user journey flows. You review and approve exact screens before frontend implementation.",
+      isAnchor: false,
       owners: ["UI/UX Designer"],
     },
     {
-      id: "build",
-      title: "Build",
-      summary: "Front-end and back-end are built in short iterations, with regular demos.",
+      id: "engineering",
+      stepNum: "03",
+      title: "Full-Stack Build",
+      summary:
+        "2 Frontend and 2 Backend engineers deliver tested slices in short sprints with regular working demos.",
+      isAnchor: false,
       owners: ["Frontend Engineer", "Backend Engineer"],
     },
     {
       id: "qa",
-      title: "QA",
+      stepNum: "04",
+      title: "Independent QA Testing",
       summary:
-        "Testing against the agreed scope on real devices, with issues fixed before release.",
+        "Dedicated QA engineer verifies acceptance criteria on real devices and automated test suites before release candidate sign-off.",
+      isAnchor: false,
       owners: ["QA Engineer"],
     },
     {
-      id: "launch",
-      title: "Launch",
-      summary: "Environments, deployment and release handled so go-live is routine, not stressful.",
-      owners: ["DevOps Engineer", "Project Manager"],
-    },
-    {
-      id: "support",
-      title: "Support",
+      id: "devops-handover",
+      stepNum: "05",
+      title: "Production Launch & Handover",
       summary:
-        "We stay available after release for fixes and next steps. Terms are agreed per project.",
-      owners: ["Project Manager", "DevOps Engineer"],
+        "DevOps provisions cloud infrastructure, automated CI/CD pipelines, repository handover, and operational documentation.",
+      isAnchor: false,
+      owners: ["DevOps Engineer", "Project Manager"],
     },
   ],
 } satisfies WorkflowContent);

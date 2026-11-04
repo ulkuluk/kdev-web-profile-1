@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>KDEV v2 — Design Exploration Board (Stage 1)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Epilogue:wght@700;800&family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #f8fafc;
+        --surface: #ffffff;
+        --ink: #0f172a;
+        --ink-muted: #475569;
+        --border: #e2e8f0;
+        --font-display: "Epilogue", sans-serif;
+        --font-body: "Manrope", sans-serif;
+        --font-mono: "DM Mono", monospace;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family: var(--font-body);
+        font-size: 16px;
+        line-height: 1.6;
+        padding: 48px 24px;
+      }
+      .container {
+        max-width: 1280px;
+        margin: 0 auto;
+      }
+      header {
+        margin-bottom: 48px;
+        border-bottom: 2px solid var(--ink);
+        padding-bottom: 24px;
+      }
+      .eyebrow {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        font-weight: 600;
+        color: #0f766e;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      h1 {
+        font-family: var(--font-display);
+        font-size: 40px;
+        font-weight: 800;
+        letter-spacing: -1px;
+        margin: 8px 0 12px;
+      }
+      .lead {
+        font-size: 18px;
+        color: var(--ink-muted);
+        max-width: 760px;
+      }
+      .board-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 32px;
+      }
+      .direction-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+      }
+      .direction-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+      }
+      .card-preview {
+        aspect-ratio: 16/10;
+        background: #e2e8f0;
+        position: relative;
+        overflow: hidden;
+        border-bottom: 1px solid var(--border);
+      }
+      .card-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: top;
+        display: block;
+      }
+      .card-body {
+        padding: 24px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+      .dir-badge {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--ink-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .dir-title {
+        font-family: var(--font-display);
+        font-size: 22px;
+        font-weight: 800;
+        margin: 6px 0 12px;
+      }
+      .dir-vibe {
+        font-size: 14px;
+        color: var(--ink-muted);
+        margin-bottom: 20px;
+        line-height: 1.5;
+      }
+      .spec-table {
+        font-size: 13px;
+        margin-bottom: 24px;
+        border-top: 1px solid var(--border);
+      }
+      .spec-row {
+        display: grid;
+        grid-template-columns: 80px 1fr;
+        padding: 8px 0;
+        border-bottom: 1px solid var(--border);
+        gap: 8px;
+      }
+      .spec-label {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        color: var(--ink-muted);
+        text-transform: uppercase;
+      }
+      .spec-val {
+        font-weight: 600;
+      }
+      .palette-swatches {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin-top: 4px;
+      }
+      .swatch {
+        width: 24px;
+        height: 24px;
+        border-radius: 4px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        display: inline-block;
+      }
+      .card-actions {
+        margin-top: auto;
+        display: flex;
+        gap: 12px;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 16px;
+        font-family: var(--font-mono);
+        font-size: 13px;
+        font-weight: 700;
+        text-decoration: none;
+        border-radius: 4px;
+        cursor: pointer;
+        flex: 1;
+        text-align: center;
+      }
+      .btn-main {
+        background: var(--ink);
+        color: #fff;
+      }
+      .btn-main:hover {
+        background: #1e293b;
+      }
+      .btn-outline {
+        border: 1px solid var(--border);
+        color: var(--ink);
+        background: #fff;
+      }
+      .btn-outline:hover {
+        background: var(--bg);
+      }
+      @media (max-width: 980px) {
+        .board-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="eyebrow">STAGE 1 &bull; VISUAL DIRECTION EXPLORATION</div>
+        <h1>KDEV Redesign / v2: Three Architectural Directions</h1>
+        <p class="lead">
+          Three distinct points of view grounded in our core promise:
+          <em>MVP to production under written MoU scope</em>. No generic blue/orange SaaS
+          glassmorphism, no gradient headlines, no stock photo fluff.
+        </p>
+      </header>
+
+      <div class="board-grid">
+        <!-- DIRECTION 1 -->
+        <div class="direction-card">
+          <div class="card-preview">
+            <img
+              src="screenshots/dir1-1440.png"
+              alt="Direction 1 Desktop Preview"
+              onerror="this.style.display = 'none'"
+            />
+          </div>
+          <div class="card-body">
+            <span class="dir-badge">DIRECTION 01</span>
+            <h2 class="dir-title">The Engineering Spec</h2>
+            <p class="dir-vibe">
+              Authoritative, technical, and architectural. Warm drafting paper canvas with deep
+              carbon ink and precision verdigris seal.
+            </p>
+            <div class="spec-table">
+              <div class="spec-row">
+                <span class="spec-label">Signature</span>
+                <span class="spec-val"
+                  >Signed Scope MoU Docket with verified clause numbers (&sect; 01.1 - &sect;
+                  01.3)</span
+                >
+              </div>
+              <div class="spec-row">
+                <span class="spec-label">Type</span>
+                <span class="spec-val">Epilogue + Source Serif 4 + IBM Plex Mono</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-label">Palette</span>
+                <div class="spec-val">
+                  <div class="palette-swatches">
+                    <span
+                      class="swatch"
+                      style="background: #f4f3ef"
+                      title="#F4F3EF Drafting Paper"
+                    ></span>
+                    <span
+                      class="swatch"
+                      style="background: #12151a"
+                      title="#12151A Deep Ink"
+                    ></span>
+                    <span
+                      class="swatch"
+                      style="background: #0f766e"
+                      title="#0F766E Verdigris Teal"
+                    ></span>
+                    <span
+                      class="swatch"
+                      style="background: #dcd9d0"
+                      title="#DCD9D0 Drafting Line"
+                    ></span>
+                  </div>
+                  <div
+                    style="
+                      font-family: var(--font-mono);
+                      font-size: 11px;
+                      margin-top: 4px;
+                      color: #0f766e;
+                    "
+                  >
+                    Contrast: 7.1:1+ (AAA)
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-actions">
+              <a href="direction-1.html" class="btn btn-main">Open Prototype &rarr;</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- DIRECTION 2 -->
+        <div class="direction-card">
+          <div class="card-preview">
+            <img
+              src="screenshots/dir2-1440.png"
+              alt="Direction 2 Desktop Preview"
+              onerror="this.style.display = 'none'"
+            />
+          </div>
+          <div class="card-body">
+            <span class="dir-badge">DIRECTION 02</span>
+            <h2 class="dir-title">The Industrial Assembly</h2>
+            <p class="dir-vibe">
+              Machine-tooled industrial production line. Dark carbon graphite cockpit with
+              industrial signal amber telemetry and sharp machined hairline panels.
+            </p>
+            <div class="spec-table">
+              <div class="spec-row">
+                <span class="spec-label">Signature</span>
+                <span class="spec-val"
+                  >Production Gates Tracker (Gate 01-04) with telemetry lamps &amp; acceptance
+                  status</span
+                >
+              </div>
+              <div class="spec-row">
+                <span class="spec-label">Type</span>
+                <span class="spec-val">Syne + DM Sans + JetBrains Mono</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-label">Palette</span>
+                <div class="spec-val">
+                  <div class="palette-swatches">
+                    <span
+                      class="swatch"
+                      style="background: #0c0e12"
+                      title="#0C0E12 Carbon Chassis"
+                    ></span>
+                    <span
+                      class="swatch"
+                      style="background: #14171f"
+                      title="#14171F Machine Surface"
+                    ></span>
+                    <span
+                      class="swatch"
+                      style="background: #f59e0b"
+                      title="#F59E0B Industrial Amber"
+                    ></span>
+                    <span
+                      class="swatch"
+                      style="background: #f0f4f8"
+                      title="#F0F4F8 White-Hot Readout"
+                    ></span>
+                  </div>
+                  <div
+                    style="
+                      font-family: var(--font-mono);
+                      font-size: 11px;
+                      margin-top: 4px;
+                      color: #d97706;
+                    "
+                  >
+                    Contrast: 9.1:1+ (AAA)
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-actions">
+              <a href="direction-2.html" class="btn btn-main">Open Prototype &rarr;</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- DIRECTION 3 -->
+        <div class="direction-card">
+          <div class="card-preview">
+            <img
+              src="screenshots/dir3-1440.png"
+              alt="Direction 3 Desktop Preview"
+              onerror="this.style.display = 'none'"
+            />
+          </div>
+          <div class="card-body">
+            <span class="dir-badge">DIRECTION 03</span>
+            <h2 class="dir-title">The Written Covenant</h2>
+            <p class="dir-vibe">
+              High-end Swiss editorial and legal dignity. Crisp white sheet, authoritative literary
+              display serif, deep indigo contract seal.
+            </p>
+            <div class="spec-table">
+              <div class="spec-row">
+                <span class="spec-label">Signature</span>
+                <span class="spec-val"
+                  >Articles of Delivery Covenant (&sect; 1.1-1.3) with anti-creep guarantee
+                  clauses</span
+                >
+              </div>
+              <div class="spec-row">
+                <span class="spec-label">Type</span>
+                <span class="spec-val">Fraunces + Manrope + DM Mono</span>
+              </div>
+              <div class="spec-row">
+                <span class="spec-label">Palette</span>
+                <div class="spec-val">
+                  <div class="palette-swatches">
+                    <span
+                      class="swatch"
+                      style="background: #ffffff"
+                      title="#FFFFFF Pure White"
+                    ></span>
+                    <span
+                      class="swatch"
+                      style="background: #0f172a"
+                      title="#0F172A Slate Ink"
+                    ></span>
+                    <span
+                      class="swatch"
+                      style="background: #3730a3"
+                      title="#3730A3 Deep Indigo"
+                    ></span>
+                    <span
+                      class="swatch"
+                      style="background: #b45309"
+                      title="#B45309 Amber Wax"
+                    ></span>
+                  </div>
+                  <div
+                    style="
+                      font-family: var(--font-mono);
+                      font-size: 11px;
+                      margin-top: 4px;
+                      color: #3730a3;
+                    "
+                  >
+                    Contrast: 9.6:1+ (AAA)
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-actions">
+              <a href="direction-3.html" class="btn btn-main">Open Prototype &rarr;</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

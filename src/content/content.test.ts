@@ -11,9 +11,11 @@ describe("content layer", () => {
     expect(() => content.assertContentConsistency()).not.toThrow();
   });
 
-  it("every nav link starts with '#'", () => {
-    expect(content.nav.items.every(({ href }) => href.startsWith("#"))).toBe(true);
-    expect(content.nav.cta.href.startsWith("#")).toBe(true);
+  it("every nav link starts with '/' or '#'", () => {
+    expect(
+      content.nav.items.every(({ href }) => href.startsWith("/") || href.startsWith("#")),
+    ).toBe(true);
+    expect(content.nav.cta.href.startsWith("/") || content.nav.cta.href.startsWith("#")).toBe(true);
   });
 
   it("team has exactly 8 members covering every role from the brief", () => {
@@ -36,7 +38,8 @@ describe("content layer", () => {
   });
 
   it("states the case-study outcome without claiming the product is live", () => {
-    const text = JSON.stringify(content.projects).toLowerCase();
+    const studies = content.getCaseStudies();
+    const text = JSON.stringify(studies).toLowerCase();
     expect(text).toContain("paused");
     expect(text).not.toMatch(/\b(is live|now live|went live)\b/);
   });

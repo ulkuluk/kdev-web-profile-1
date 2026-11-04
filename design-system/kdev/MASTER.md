@@ -1,14 +1,13 @@
-# Design System Master File
+# Design System Master File (v2 — The Engineering Spec)
 
-> **LOGIC:** When building a specific page, first check `design-system/pages/[page-name].md`.
-> If that file exists, its rules **override** this Master file.
-> If not, strictly follow the rules below.
+**LOGIC:** When building or modifying a page, follow the tokens and rules below as the authoritative design source of truth.
 
 ---
 
-**Project:** KDEV
-**Generated:** 2026-11-04 14:53:29
-**Category:** SaaS (General)
+**Project:** KDEV  
+**Revision:** v2 (The Engineering Spec)  
+**Direction:** Warm Drafting Paper & Architectural Engineering  
+**Positioning:** Early-stage startup MVP to production with scope, milestones, and price agreed in writing.
 
 ---
 
@@ -16,199 +15,138 @@
 
 ### Color Palette
 
-| Role | Hex | CSS Variable |
-|------|-----|--------------|
-| Primary | `#2563EB` | `--color-primary` |
-| On Primary | `#FFFFFF` | `--color-on-primary` |
-| Secondary | `#3B82F6` | `--color-secondary` |
-| On Secondary | `#000000` | `--color-on-secondary` |
-| Accent/CTA | `#EA580C` | `--color-accent` |
-| On Accent/CTA | `#000000` | `--color-on-accent` |
-| Background | `#F8FAFC` | `--color-background` |
-| Foreground | `#1E293B` | `--color-foreground` |
-| Card | `#FFFFFF` | `--color-card` |
-| Card Foreground | `#1E293B` | `--color-card-foreground` |
-| Muted | `#E9EFF8` | `--color-muted` |
-| Muted Foreground | `#475569` | `--color-muted-foreground` |
-| Border | `#E2E8F0` | `--color-border` |
-| Destructive | `#DC2626` | `--color-destructive` |
-| On Destructive | `#FFFFFF` | `--color-on-destructive` |
-| Ring | `#2563EB` | `--color-ring` |
+Strictly 3 core colors + neutrals. No blue + orange pairing, no purple/pink gradients, no glassmorphism, no blurry blobs.
 
-**Color Notes:** Trust blue + orange CTA contrast [Accent adjusted from #F97316]
+| Role | Hex | CSS Variable | Notes |
+|------|-----|--------------|-------|
+| Primary / Ink | `#12151A` | `--color-primary`, `--color-foreground` | Deep carbon drafting ink |
+| On Primary | `#FFFFFF` | `--color-on-primary` | Pure white text on ink |
+| Accent / Verdigris | `#0F766E` | `--color-accent` | Verdigris teal (AAA >7.1:1 on paper) |
+| Accent Hover | `#115E59` | `--color-accent-hover` | Deeper teal hover state |
+| On Accent | `#FFFFFF` | `--color-on-accent` | Crisp white on teal |
+| Accent Tint | `#E6F4F2` | `--color-accent-tint` | Light verdigris wash |
+| Accent Glow | `#14B8A6` | `--color-accent-glow` | High-contrast readout tag on dark surfaces |
+| Background / Paper | `#F4F3EF` | `--color-background` | Warm architectural drafting paper |
+| Card / Surface | `#FFFFFF` | `--color-card` | Crisp white drafting sheet |
+| Card Foreground | `#12151A` | `--color-card-foreground` | Deep carbon ink |
+| Muted / Drafting Line | `#ECEAE4` | `--color-muted` | Soft paper tint |
+| Muted Foreground | `#525965` | `--color-muted-foreground` | Calibrated slate (4.6:1+ on paper) |
+| Border | `#DCD9D0` | `--color-border` | Precision technical line |
+| Border Dark | `#12151A` | `--color-border-dark` | Structural border & docket frames |
+| Dark Band Surface | `#12151A` | `--color-dark-band` | Dark ink band behind Petepete showcase |
+| Destructive | `#DC2626` | `--color-destructive` | Error states |
+| On Destructive | `#FFFFFF` | `--color-on-destructive` | Pure white text |
+| Ring / Focus | `#0F766E` | `--color-ring` | High-visibility focus ring (3px offset 2px) |
 
 ### Typography
 
-- **Heading Font:** Plus Jakarta Sans
-- **Body Font:** Plus Jakarta Sans
-- **Mood:** friendly, modern, saas, clean, approachable, professional
-- **Google Fonts:** [Plus Jakarta Sans + Plus Jakarta Sans](https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap)
-
-**CSS Import:**
-```css
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
-```
+Google Fonts loaded via `next/font`:
+- **Display / Heading:** `Epilogue` (weight: 600, 700, 800) — technical geometric weight, balanced letter-spacing.
+- **Body / Editorial:** `Source Serif 4` (weight: 400, 600) — literary clarity, readable at 16–18px.
+- **Mono / Software Details:** `IBM Plex Mono` (weight: 400, 500, 600) — labels, status tags, step numbers, clause indicators (§ 01.1), terminal snippets, commit/spec readouts.
+- **Banned Fonts:** Inter, Roboto, Poppins, Plus Jakarta Sans, Space Grotesk.
 
 ### Spacing Variables
 
 | Token | Value | Usage |
 |-------|-------|-------|
-| `--space-xs` | `4px` / `0.25rem` | Tight gaps |
-| `--space-sm` | `8px` / `0.5rem` | Icon gaps, inline spacing |
-| `--space-md` | `16px` / `1rem` | Standard padding |
-| `--space-lg` | `24px` / `1.5rem` | Section padding |
-| `--space-xl` | `32px` / `2rem` | Large gaps |
-| `--space-2xl` | `48px` / `3rem` | Section margins |
-| `--space-3xl` | `64px` / `4rem` | Hero padding |
+| `--space-xs` | `4px` / `0.25rem` | Monospace tags, status pills |
+| `--space-sm` | `8px` / `0.5rem` | Icon gaps, chip spacing |
+| `--space-md` | `16px` / `1rem` | Standard interior component padding |
+| `--space-lg` | `24px` / `1.5rem` | Card padding, grid gaps |
+| `--space-xl` | `32px` / `2rem` | Section gutters |
+| `--space-2xl` | `48px` / `3rem` | Section vertical rhythm |
+| `--space-3xl` | `64px` / `4rem` | Hero padding & dark band margins |
 
-### Shadow Depths
+### Elevation & Borders
 
-| Level | Value | Usage |
-|-------|-------|-------|
-| `--shadow-sm` | `0 1px 2px rgba(0,0,0,0.05)` | Subtle lift |
-| `--shadow-md` | `0 4px 6px rgba(0,0,0,0.1)` | Cards, buttons |
-| `--shadow-lg` | `0 10px 15px rgba(0,0,0,0.1)` | Modals, dropdowns |
-| `--shadow-xl` | `0 20px 25px rgba(0,0,0,0.15)` | Hero images, featured cards |
+- Precision over diffusion: crisp 1px borders (`#DCD9D0`), structured solid 1–2px dark ink borders (`#12151A`), and hard-edged 3px–4px offset box shadows (`4px 4px 0px #12151A`).
+- **NO soft diffuse glassmorphism or floating blurry blobs.**
 
 ---
 
 ## Component Specs
 
-### Buttons
+### Buttons & CTAs
+
+CTA must be the most visible interactive element on every screen:
 
 ```css
-/* Primary Button */
+/* Primary Button / High Visibility CTA */
 .btn-primary {
-  background: #EA580C;
-  color: white;
-  padding: 12px 24px;
-  border-radius: 8px;
+  background: #12151A;
+  color: #FFFFFF;
+  border: 1px solid #12151A;
+  padding: 10px 20px;
+  font-family: var(--font-mono);
+  font-size: 13px;
   font-weight: 600;
-  transition: all 200ms ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-radius: 2px;
+  box-shadow: 2px 2px 0px #12151A;
+  transition: all 150ms ease;
   cursor: pointer;
 }
 
 .btn-primary:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
+  background: #0F766E;
+  border-color: #0F766E;
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0px #12151A;
 }
 
 /* Secondary Button */
 .btn-secondary {
   background: transparent;
-  color: #2563EB;
-  border: 2px solid #2563EB;
-  padding: 12px 24px;
-  border-radius: 8px;
+  color: #12151A;
+  border: 1px solid #DCD9D0;
+  padding: 10px 20px;
+  font-family: var(--font-mono);
+  font-size: 13px;
   font-weight: 600;
-  transition: all 200ms ease;
-  cursor: pointer;
-}
-```
-
-### Cards
-
-```css
-.card {
-  background: #F8FAFC;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: var(--shadow-md);
-  transition: all 200ms ease;
+  border-radius: 2px;
+  transition: all 150ms ease;
   cursor: pointer;
 }
 
-.card:hover {
-  box-shadow: var(--shadow-lg);
-  transform: translateY(-2px);
+.btn-secondary:hover {
+  background: #FFFFFF;
+  border-color: #12151A;
 }
 ```
 
-### Inputs
+### Signature Element: Signed Scope MoU Docket
 
-```css
-.input {
-  padding: 12px 16px;
-  border: 1px solid #E2E8F0;
-  border-radius: 8px;
-  font-size: 16px;
-  transition: border-color 200ms ease;
-}
+- Clause indicators (§ 01.1, § 01.2, § 01.3).
+- Structured tabular docket with dark header bar and verified state tags (`MANDATORY`, `GUARANTEED`, `COMMITTED`).
+- Subtle animated interactive check-off states respecting `prefers-reduced-motion`.
 
-.input:focus {
-  border-color: #2563EB;
-  outline: none;
-  box-shadow: 0 0 0 3px #2563EB20;
-}
-```
+### Product & Software House Moments
 
-### Modals
-
-```css
-.modal-overlay {
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
-}
-
-.modal {
-  background: white;
-  border-radius: 16px;
-  padding: 32px;
-  box-shadow: var(--shadow-xl);
-  max-width: 500px;
-  width: 90%;
-}
-```
+- Precision device frames with browser title bars (`petepete.app / preview / creator-portal`) and status telemetry.
+- Code/terminal snippets and architectural specification tags using IBM Plex Mono.
+- Dedicated dark band on Home (`#12151A`) behind the Petepete media slot to give video/footage maximum pop before returning to the warm drafting paper background.
 
 ---
 
-## Style Guidelines
+## Anti-Patterns (STRICTLY FORBIDDEN)
 
-**Style:** Glassmorphism
-
-**Keywords:** Frosted glass, transparent, blurred background, layered, vibrant background, light source, depth, multi-layer
-
-**Best For:** Modern SaaS, financial dashboards, high-end corporate, lifestyle apps, modal overlays, navigation
-
-**Key Effects:** Backdrop blur (10-20px), subtle border (1px solid rgba white 0.2), light reflection, Z-depth
-
-### Page Pattern
-
-**Pattern Name:** Hero + Features + CTA
-
-- **Conversion Strategy:** Deep CTA placement. For CTA label text, verify at least 4.5:1 against the button fill; use 7:1 only when the product explicitly targets AAA normal-text contrast. Keep focus and component boundaries independently visible. Disable hero parallax under reduced motion and render its static final state.
-- **CTA Placement:** Hero (sticky) + Bottom
-- **Section Order:** Hero with headline/image > Value prop > Key features (3-5) > CTA section > Footer
-
----
-
-## Anti-Patterns (Do NOT Use)
-
-- ❌ Excessive animation
-- ❌ Dark mode by default
-
-### Additional Forbidden Patterns
-
-- ❌ **Emojis as icons** — Use SVG icons (Heroicons, Lucide, Simple Icons)
-- ❌ **Missing cursor:pointer** — All clickable elements must have cursor:pointer
-- ❌ **Layout-shifting hovers** — Avoid scale transforms that shift layout
-- ❌ **Low contrast text** — Maintain 4.5:1 minimum contrast ratio
-- ❌ **Instant state changes** — Always use transitions (150-300ms)
-- ❌ **Invisible focus states** — Focus states must be visible for a11y
+- ❌ **No gradient headline text** (solid deep ink `#12151A` or pure white on dark band).
+- ❌ **No glassmorphism / blurred backdrops** (crisp drafting paper and solid panels).
+- ❌ **No blue + orange SaaS pairing** (teal `#0F766E`, ink `#12151A`, paper `#F4F3EF`).
+- ❌ **No 3-equal-cards-with-icon-circles grid**.
+- ❌ **No stock photos, fake testimonials, fake client logos, or fake ratings**.
+- ❌ **No buzzwords**: "empower", "elevate", "seamless", "cutting-edge", "innovative", "synergy", "world-class".
+- ❌ **No claim that Petepete is "live"** (must state: "MVP delivered, production-ready; client paused launch before go-live").
 
 ---
 
 ## Pre-Delivery Checklist
 
-Before delivering any UI code, verify:
-
-- [ ] No emojis used as icons (use SVG instead)
-- [ ] All icons from consistent icon set (Heroicons/Lucide)
-- [ ] `cursor-pointer` on all clickable elements
-- [ ] Hover states with smooth transitions (150-300ms)
-- [ ] Light mode: text contrast 4.5:1 minimum
-- [ ] Focus states visible for keyboard navigation
-- [ ] `prefers-reduced-motion` respected
-- [ ] Responsive: 375px, 768px, 1024px, 1440px
-- [ ] No content hidden behind fixed navbars
-- [ ] No horizontal scroll on mobile
+- [ ] All text passes WCAG AA (minimum 4.5:1 normal text, 7:1+ for verdigris teal and deep ink).
+- [ ] Primary CTA is clearly the most prominent interactive element on every screen.
+- [ ] Petepete media on Home is framed in the dark ink band for optimal contrast.
+- [ ] Motion animations are subtle and fully disabled under `prefers-reduced-motion`.
+- [ ] No hardcoded copy in components; all copy validated through Zod in `src/content/`.
+- [ ] Responsive across 375px, 768px, 1024px, 1440px.

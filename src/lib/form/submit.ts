@@ -9,9 +9,12 @@ export function buildMailto(email: string, subject: string, v: FormValues): stri
     `Name: ${v.name}`,
     `Email: ${v.email}`,
     v.company && `Company: ${v.company}`,
-    `Project type: ${v.projectType}`,
-    v.budget && `Budget: ${v.budget}`,
+    `Stage: ${v.stage}`,
+    v.timeline && `Desired Timeline: ${v.timeline}`,
+    v.budget && `Budget Range: ${v.budget}`,
+    v.link && `Reference Link: ${v.link}`,
     "",
+    "Project Description:",
     v.message,
   ]
     .filter((l): l is string => typeof l === "string")
@@ -20,8 +23,8 @@ export function buildMailto(email: string, subject: string, v: FormValues): stri
 }
 
 /**
- * POST the form as JSON to the configured endpoint (Formspree-style; Web3Forms works with the
- * optional access key). `honeypot` is the hidden spam field: bots fill it, humans never see it.
+ * POST the form as JSON to the configured endpoint (Formspree-style; Web3Forms works too with
+ * optional access key). `honeypot` is a hidden spam field: bots fill it, humans never see it.
  */
 export async function submitForm(
   values: FormValues,
