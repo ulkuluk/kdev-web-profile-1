@@ -13,6 +13,7 @@ export const projectsSchema = z.object({
     role: z.string(),
     outcome: z.string(),
     screenshots: z.string(),
+    mockNote: z.string(),
   }),
   items: z
     .array(
@@ -30,7 +31,9 @@ export const projectsSchema = z.object({
         role: z.array(z.string()).min(1),
         outcome: nonEmpty,
         /** `src: ""` renders the built-in mock UI instead of an image. */
-        screenshots: z.array(z.object({ alt: z.string(), src: optionalUrl.or(z.string().startsWith("/")) })),
+        screenshots: z.array(
+          z.object({ alt: z.string(), src: optionalUrl.or(z.string().startsWith("/")) }),
+        ),
         /** Roles that took part (rendered as chips). */
         team: z.array(roleSchema),
       }),
@@ -43,7 +46,8 @@ export type Project = ProjectsContent["items"][number];
 export const projects = projectsSchema.parse({
   eyebrow: "Featured project",
   title: "A support platform for content creators",
-  description: "Our first delivered project: a web app where fans can support the creators they follow.",
+  description:
+    "Our first delivered project: a web app where fans can support the creators they follow.",
   labels: {
     challenge: "Challenge",
     solution: "Solution",
@@ -52,6 +56,7 @@ export const projects = projectsSchema.parse({
     role: "Our role",
     outcome: "Outcome",
     screenshots: "Screens",
+    mockNote: "Placeholder illustration. Real screenshots to follow.",
   },
   items: [
     {

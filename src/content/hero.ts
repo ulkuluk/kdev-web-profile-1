@@ -26,7 +26,7 @@ export const heroSchema = z.object({
 export type HeroContent = z.infer<typeof heroSchema>;
 
 export const hero = heroSchema.parse({
-  eyebrow: "Software house · 8 specialists",
+  eyebrow: "Software house ï¿½ 8 specialists",
   headline: "A whole delivery team, not just coders.",
   subheadline:
     "Product management, design, engineering, QA and DevOps in one team. You get one partner who takes your idea from first conversation to a working release.",

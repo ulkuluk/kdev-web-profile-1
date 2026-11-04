@@ -34,7 +34,8 @@ export const workflow = processSchema.parse({
     {
       id: "design",
       title: "Design",
-      summary: "User flows and interface designs you can review and react to before code is written.",
+      summary:
+        "User flows and interface designs you can review and react to before code is written.",
       owners: ["UI/UX Designer"],
     },
     {
@@ -46,7 +47,8 @@ export const workflow = processSchema.parse({
     {
       id: "qa",
       title: "QA",
-      summary: "Testing against the agreed scope on real devices, with issues fixed before release.",
+      summary:
+        "Testing against the agreed scope on real devices, with issues fixed before release.",
       owners: ["QA Engineer"],
     },
     {
@@ -58,7 +60,8 @@ export const workflow = processSchema.parse({
     {
       id: "support",
       title: "Support",
-      summary: "We stay available after release for fixes and next steps. Terms are agreed per project.",
+      summary:
+        "We stay available after release for fixes and next steps. Terms are agreed per project.",
       owners: ["Project Manager", "DevOps Engineer"],
     },
   ],

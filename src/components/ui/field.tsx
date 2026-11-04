@@ -12,7 +12,11 @@ type FieldProps = {
   error?: string;
   required?: boolean;
   className?: string;
-  children: (a11y: { id: string; "aria-invalid": boolean; "aria-describedby"?: string }) => React.ReactNode;
+  children: (a11y: {
+    id: string;
+    "aria-invalid": boolean;
+    "aria-describedby"?: string;
+  }) => React.ReactNode;
 };
 
 /** Label + control + inline error, wired with ids so errors are announced. */

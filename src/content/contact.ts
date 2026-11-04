@@ -70,7 +70,7 @@ export const contact = contactSchema.parse({
     selectPrompt: "Select an option",
     optionalHint: "optional",
     submit: "Send message",
-    sending: "Sending…",
+    sending: "Sendingï¿½",
     projectTypes: [
       { value: "web", label: "Web application" },
       { value: "custom-system", label: "Custom system" },

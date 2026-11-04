@@ -25,7 +25,11 @@ export const services = servicesSchema.parse({
   eyebrow: "Services",
   title: "Three things we do well",
   description: "Pick one, or combine them. The same team works across all three.",
-  labels: { builds: "What we build", deliverables: "Typical deliverables", useCases: "Example use cases" },
+  labels: {
+    builds: "What we build",
+    deliverables: "Typical deliverables",
+    useCases: "Example use cases",
+  },
   items: [
     {
       id: "web",
@@ -38,7 +42,11 @@ export const services = servicesSchema.parse({
         "Back-end and database",
         "Automated tests and release setup",
       ],
-      useCases: ["Customer portals", "Booking and ordering flows", "Platforms for creators or communities"],
+      useCases: [
+        "Customer portals",
+        "Booking and ordering flows",
+        "Platforms for creators or communities",
+      ],
     },
     {
       id: "custom-systems",
@@ -51,7 +59,11 @@ export const services = servicesSchema.parse({
         "REST APIs and integrations",
         "Access control and audit trails",
       ],
-      useCases: ["Replacing spreadsheets", "Operations and reporting dashboards", "Connecting existing tools through APIs"],
+      useCases: [
+        "Replacing spreadsheets",
+        "Operations and reporting dashboards",
+        "Connecting existing tools through APIs",
+      ],
     },
     {
       id: "mobile",

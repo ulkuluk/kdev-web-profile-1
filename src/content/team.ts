@@ -35,7 +35,7 @@ export const team = teamSchema.parse({
   eyebrow: "Team",
   title: "Eight specialists, one team",
   description: "Every role a project needs, working together from day one.",
-  linkLabels: { github: "GitHub profile", linkedin: "LinkedIn profile" },
+  linkLabels: { github: "GitHub", linkedin: "LinkedIn" },
   members: [
     todoMember("Project Manager", "PM"),
     todoMember("UI/UX Designer", "UX"),

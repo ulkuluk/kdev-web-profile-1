@@ -4,7 +4,10 @@ export const faqSchema = z.object({
   eyebrow: z.string(),
   title: z.string(),
   description: z.string(),
-  items: z.array(z.object({ id: z.string(), question: z.string(), answer: z.string() })).min(5).max(6),
+  items: z
+    .array(z.object({ id: z.string(), question: z.string(), answer: z.string() }))
+    .min(5)
+    .max(6),
 });
 export type FaqContent = z.infer<typeof faqSchema>;
 
