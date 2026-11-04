@@ -20,11 +20,15 @@
   --color-muted: #e9eff8;
   --color-muted-foreground: #475569;
   --color-border: #e2e8f0;
-  --color-border-strong: #94a3b8; /* 3:1 non-text boundary (inputs) */
+  --color-border-strong: #64748b; /* >=3:1 non-text boundary (inputs) */
   --color-destructive: #dc2626;
   --color-on-destructive: #ffffff;
   --color-success: #15803d;
   --color-ring: #2563eb;
+  /* Code-card syntax tints (all >=4.5:1 on --color-foreground) */
+  --color-code-key: #93c5fd;
+  --color-code-string: #fdba74;
+  --color-code-comment: #94a3b8;
 
   /* Typography (families are set by next/font in layout.tsx) */
   --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
@@ -45,8 +49,12 @@
   /* Motion */
   --duration-fast: 150ms;
   --duration-base: 200ms;
+  /* Tailwind's default transition duration follows the token, so no per-component duration needed. */
+  --default-transition-duration: var(--duration-base);
   --duration-slow: 300ms;
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-float: float 7s ease-in-out infinite;
 
   /* Layout */
   --spacing-header: 4.5rem;
@@ -136,3 +144,29 @@
     stroke-dashoffset: -28;
   }
 }
+
+@keyframes float {
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+/* Hero pipeline: each step lights up in turn (6 steps x 1s). Ends neutral. */
+@keyframes step-active {
+  0%,
+  16% {
+    background-color: rgb(37 99 235 / 0.1);
+    border-color: var(--color-primary);
+  }
+  17%,
+  100% {
+    background-color: transparent;
+    border-color: var(--color-border);
+  }
+}
+
+.step-active {
+  animation: step-active 6s linear infinite;
+  animation-delay: calc(var(--i) * 1s);
+}
+
