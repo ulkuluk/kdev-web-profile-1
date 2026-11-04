@@ -1,0 +1,18 @@
+{
+  "name": "kdev-web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Company website for KDEV, a software house.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check:content": "tsx scripts/check-content.ts"
+  }
+}
