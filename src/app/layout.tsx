@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import localFont from "next/font/local";
+import { Epilogue, Source_Serif_4, IBM_Plex_Mono } from "next/font/google";
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { nav, site } from "@/content";
@@ -7,16 +7,24 @@ import { organizationJsonLd } from "@/lib/json-ld";
 import { env } from "@/lib/env";
 import "./globals.css";
 
-const jakarta = localFont({
-  src: "./fonts/plus-jakarta-sans-latin-wght-normal.woff2",
-  variable: "--font-jakarta",
-  weight: "200 800",
+const epilogue = Epilogue({
+  subsets: ["latin"],
+  variable: "--font-epilogue",
+  weight: ["600", "700", "800"],
   display: "swap",
 });
-const jetbrains = localFont({
-  src: "./fonts/jetbrains-mono-latin-wght-normal.woff2",
-  variable: "--font-jetbrains",
-  weight: "100 800",
+
+const sourceSerif = Source_Serif_4({
+  subsets: ["latin"],
+  variable: "--font-serif",
+  weight: ["400", "600"],
+  display: "swap",
+});
+
+const ibmPlexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  weight: ["400", "500", "600"],
   display: "swap",
 });
 
@@ -43,19 +51,21 @@ export const metadata: Metadata = {
   },
 };
 
-export const viewport: Viewport = { themeColor: "#f8fafc" };
+export const viewport: Viewport = { themeColor: "#F4F3EF" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${jakarta.variable} ${jetbrains.variable}`}>
-      <body className="antialiased">
-        {/* Without JS, scroll-reveal content must still be visible. */}
+    <html
+      lang="en"
+      className={`${epilogue.variable} ${sourceSerif.variable} ${ibmPlexMono.variable}`}
+    >
+      <body className="bg-background font-serif text-foreground antialiased selection:bg-accent-tint selection:text-accent">
         <noscript>
           <style>{"[data-reveal]{opacity:1!important;transform:none!important}"}</style>
         </noscript>
         <a
           href="#main"
-          className="sr-only z-[60] rounded-sm bg-accent px-4 py-2 font-semibold text-on-accent focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+          className="sr-only z-[60] rounded-xs border border-border-dark bg-primary px-4 py-2 font-mono text-xs font-semibold text-on-primary uppercase shadow-sm focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
         >
           {nav.labels.skipLink}
         </a>
@@ -64,7 +74,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Footer site={site} nav={nav} />
         <script
           type="application/ld+json"
-          // JSON-LD must be injected as raw JSON; "<" is escaped so content cannot close the tag.
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(organizationJsonLd(site)).replace(/</g, "\\u003c"),
           }}

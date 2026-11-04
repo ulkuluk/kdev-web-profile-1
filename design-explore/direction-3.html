@@ -1,0 +1,753 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>KDEV Direction 3 — The Written Covenant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,800;1,9..144,600&family=Manrope:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #ffffff;
+        --bg-alt: #f8fafc;
+        --ink: #0f172a;
+        --ink-muted: #475569;
+        --indigo: #3730a3;
+        --indigo-tint: #eef2ff;
+        --amber: #b45309;
+        --amber-tint: #fef3c7;
+        --border: #e2e8f0;
+        --border-dark: #0f172a;
+        --font-display: "Fraunces", Georgia, serif;
+        --font-body: "Manrope", -apple-system, sans-serif;
+        --font-mono: "DM Mono", monospace;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family: var(--font-body);
+        font-size: 17px;
+        line-height: 1.65;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 28px;
+      }
+
+      /* Top banner */
+      .direction-banner {
+        background: var(--indigo);
+        color: #fff;
+        font-family: var(--font-mono);
+        font-size: 12px;
+        padding: 8px 0;
+      }
+      .direction-banner-inner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .direction-badge {
+        background: #fff;
+        color: var(--indigo);
+        padding: 2px 8px;
+        font-weight: 700;
+        border-radius: 2px;
+      }
+
+      header {
+        border-bottom: 1px solid var(--border);
+        background: #fff;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+      }
+      .header-inner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 70px;
+      }
+      .brand {
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+        text-decoration: none;
+        color: var(--ink);
+      }
+      .brand-mark {
+        font-family: var(--font-display);
+        font-weight: 800;
+        font-size: 26px;
+        letter-spacing: -1px;
+        color: var(--indigo);
+      }
+      .brand-seal {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        color: var(--ink-muted);
+        border: 1px solid var(--border);
+        padding: 2px 6px;
+        border-radius: 2px;
+      }
+
+      nav {
+        display: flex;
+        align-items: center;
+        gap: 32px;
+      }
+      nav a {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--ink-muted);
+        text-decoration: none;
+        transition: color 0.15s ease;
+      }
+      nav a:hover {
+        color: var(--ink);
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 22px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+      }
+      .btn-primary {
+        background: var(--indigo);
+        color: #fff;
+        border: 1px solid var(--indigo);
+      }
+      .btn-primary:hover {
+        background: #312e81;
+        border-color: #312e81;
+      }
+      .btn-secondary {
+        background: #fff;
+        color: var(--ink);
+        border: 1px solid var(--border);
+      }
+      .btn-secondary:hover {
+        background: var(--bg-alt);
+        border-color: var(--border-dark);
+      }
+
+      /* HERO */
+      /*
+     * Headline options considered:
+     * 1. "Software built under written contract, taken all the way to production."
+     * 2. "We take your startup idea to a production-ready MVP under signed scope." <- chosen
+     * 3. "The complete 8-person team for founders who need production software."
+     */
+      .hero {
+        padding: 72px 0 88px;
+        border-bottom: 1px solid var(--border);
+      }
+      .hero-layout {
+        display: grid;
+        grid-template-columns: 1.15fr 1fr;
+        gap: 56px;
+        align-items: start;
+      }
+      .hero-eyebrow {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--indigo);
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .hero h1 {
+        font-family: var(--font-display);
+        font-size: 52px;
+        line-height: 1.1;
+        font-weight: 800;
+        letter-spacing: -1.5px;
+        color: var(--ink);
+        margin-bottom: 24px;
+      }
+      .hero-deck {
+        font-size: 19px;
+        line-height: 1.6;
+        color: var(--ink-muted);
+        margin-bottom: 36px;
+        max-width: 520px;
+      }
+      .hero-ctas {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 48px;
+        flex-wrap: wrap;
+      }
+
+      /* SIGNATURE ELEMENT: ARTICLES OF COVENANT */
+      .covenant-box {
+        border: 1px solid var(--border);
+        border-left: 4px solid var(--indigo);
+        background: var(--bg-alt);
+        padding: 24px;
+        border-radius: 4px;
+      }
+      .covenant-lead {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        color: var(--indigo);
+        font-weight: 600;
+        letter-spacing: 1px;
+        margin-bottom: 14px;
+        text-transform: uppercase;
+      }
+      .covenant-articles {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .article-item {
+        display: flex;
+        gap: 12px;
+        align-items: baseline;
+        font-size: 14px;
+      }
+      .article-mark {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--indigo);
+        font-weight: 700;
+        white-space: nowrap;
+      }
+      .article-text strong {
+        color: var(--ink);
+      }
+      .article-anti {
+        color: #94a3b8;
+        text-decoration: line-through;
+        margin-left: 6px;
+        font-size: 13px;
+      }
+
+      /* Hero media device frame */
+      .hero-showcase-frame {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: #fff;
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+        overflow: hidden;
+      }
+      .frame-bar {
+        border-bottom: 1px solid var(--border);
+        padding: 12px 18px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: var(--bg-alt);
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--ink-muted);
+      }
+      .browser-pill {
+        background: #fff;
+        border: 1px solid var(--border);
+        padding: 4px 14px;
+        border-radius: 12px;
+        font-size: 11px;
+        color: var(--ink);
+      }
+      .video-viewport {
+        aspect-ratio: 16/10;
+        background: #1e222d;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        text-align: center;
+        padding: 24px;
+        position: relative;
+      }
+      .viewport-label {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 4px 10px;
+        border-radius: 3px;
+        margin-bottom: 12px;
+      }
+      .viewport-title {
+        font-family: var(--font-display);
+        font-size: 22px;
+        font-weight: 700;
+      }
+      .viewport-caption {
+        font-size: 13px;
+        color: #94a3b8;
+        margin-top: 6px;
+      }
+      .frame-footer {
+        padding: 12px 18px;
+        display: flex;
+        justify-content: space-between;
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--ink-muted);
+        border-top: 1px solid var(--border);
+      }
+
+      /* PILLARS */
+      .pillars-section {
+        padding: 72px 0;
+        background: var(--bg-alt);
+        border-bottom: 1px solid var(--border);
+      }
+      .section-eyebrow {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--indigo);
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        margin-bottom: 12px;
+        text-transform: uppercase;
+      }
+      .pillars-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 32px;
+        margin-top: 28px;
+      }
+      .pillar-col {
+        display: flex;
+        flex-direction: column;
+      }
+      .pillar-rule {
+        width: 32px;
+        height: 2px;
+        background: var(--indigo);
+        margin-bottom: 16px;
+      }
+      .pillar-title {
+        font-family: var(--font-display);
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--ink);
+        margin-bottom: 10px;
+      }
+      .pillar-desc {
+        font-size: 15px;
+        color: var(--ink-muted);
+        line-height: 1.6;
+      }
+
+      /* FEATURED WORK */
+      .work-section {
+        padding: 88px 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .work-grid {
+        display: grid;
+        grid-template-columns: 1.25fr 1fr;
+        gap: 56px;
+        align-items: center;
+        margin-top: 36px;
+      }
+      .work-header h2 {
+        font-family: var(--font-display);
+        font-size: 38px;
+        line-height: 1.2;
+        font-weight: 800;
+        letter-spacing: -1px;
+        margin-bottom: 18px;
+      }
+      .work-body {
+        font-size: 18px;
+        line-height: 1.6;
+        color: var(--ink-muted);
+        margin-bottom: 28px;
+      }
+      .work-metrics-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        padding: 20px 0;
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 28px;
+      }
+      .metric-col .metric-label {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        color: var(--ink-muted);
+        text-transform: uppercase;
+      }
+      .metric-col .metric-value {
+        font-family: var(--font-display);
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--ink);
+        margin-top: 4px;
+      }
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 32px;
+      }
+      .chip {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        padding: 4px 10px;
+        border: 1px solid var(--border);
+        border-radius: 3px;
+        color: var(--ink);
+        background: var(--bg-alt);
+      }
+
+      /* SERVICES SNIPPET */
+      .services-section {
+        padding: 88px 0;
+        background: var(--bg-alt);
+      }
+      .services-flow-header {
+        max-width: 680px;
+        margin-bottom: 44px;
+      }
+      .services-flow-header h2 {
+        font-family: var(--font-display);
+        font-size: 38px;
+        font-weight: 800;
+        letter-spacing: -1px;
+        margin-bottom: 14px;
+      }
+      .flow-columns {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+      }
+      .flow-card {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 24px;
+      }
+      .flow-card.accent-card {
+        border-color: var(--indigo);
+        box-shadow: 0 4px 12px rgba(55, 48, 163, 0.08);
+      }
+      .flow-step-num {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--indigo);
+        margin-bottom: 8px;
+      }
+      .flow-title {
+        font-family: var(--font-display);
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+      .flow-desc {
+        font-size: 14px;
+        color: var(--ink-muted);
+        line-height: 1.55;
+      }
+
+      @media (max-width: 900px) {
+        .hero-layout,
+        .work-grid {
+          grid-template-columns: 1fr;
+          gap: 40px;
+        }
+        .pillars-grid,
+        .flow-columns {
+          grid-template-columns: 1fr 1fr;
+        }
+        .hero h1 {
+          font-size: 38px;
+        }
+      }
+      @media (max-width: 600px) {
+        .pillars-grid,
+        .flow-columns {
+          grid-template-columns: 1fr;
+        }
+        nav {
+          display: none;
+        }
+        .hero h1 {
+          font-size: 32px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="direction-banner">
+      <div class="direction-banner-inner container">
+        <div>
+          <strong>DIRECTION 3</strong> / The Written Covenant (Clean Legalist &bull; Swiss
+          Editorial)
+        </div>
+        <div>
+          <span class="direction-badge">AA VERIFIED 9.6:1+</span> Fraunces + Manrope + DM Mono
+        </div>
+      </div>
+    </div>
+
+    <header>
+      <div class="header-inner container">
+        <a href="#" class="brand">
+          <span class="brand-mark">KDEV</span>
+          <span class="brand-seal">&sect; 8-Specialist Unit</span>
+        </a>
+        <nav>
+          <a href="#work">Featured Work</a>
+          <a href="#pillars">Operating Pillars</a>
+          <a href="#services">Engagement Flow</a>
+          <a href="#about">About Team</a>
+        </nav>
+        <a href="#contact" class="btn btn-primary">Start MVP</a>
+      </div>
+    </header>
+
+    <main>
+      <!-- HERO -->
+      <section class="hero">
+        <div class="hero-layout container">
+          <div class="hero-left">
+            <div class="hero-eyebrow">
+              <span>&sect; DISCIPLINE IN WRITING</span>
+              <span>&bull;</span>
+              <span>NO PROTOYPE ABANDONMENT</span>
+            </div>
+            <h1>We take your startup idea to a production-ready MVP under signed scope.</h1>
+            <p class="hero-deck">
+              Scope, milestones, and price agreed in writing before any code is produced. A
+              dedicated cross-functional team of 8 takes responsibility from first architecture doc
+              to production release.
+            </p>
+            <div class="hero-ctas">
+              <a href="#contact" class="btn btn-primary">Start your MVP</a>
+              <a href="#work" class="btn btn-secondary">Explore Petepete case study</a>
+            </div>
+
+            <!-- SIGNATURE ELEMENT: THE ARTICLES OF ENGAGEMENT -->
+            <div class="covenant-box">
+              <div class="covenant-lead">Articles of Delivery Covenant</div>
+              <div class="covenant-articles">
+                <div class="article-item">
+                  <span class="article-mark">&sect; 1.1</span>
+                  <span class="article-text">
+                    <strong>Fixed Scope &amp; Milestones:</strong> All deliverables locked in
+                    writing. <span class="article-anti">No scope creep</span>
+                  </span>
+                </div>
+                <div class="article-item">
+                  <span class="article-mark">&sect; 1.2</span>
+                  <span class="article-text">
+                    <strong>Production Release:</strong> Tested with CI/CD and databases.
+                    <span class="article-anti">No toy prototypes</span>
+                  </span>
+                </div>
+                <div class="article-item">
+                  <span class="article-mark">&sect; 1.3</span>
+                  <span class="article-text">
+                    <strong>Complete 8-Person Unit:</strong> PM, Design, 2 FE, 2 BE, QA, DevOps on
+                    every project.
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-right">
+            <div class="hero-showcase-frame">
+              <div class="frame-bar">
+                <span class="browser-pill">petepete.app &bull; production build</span>
+                <span style="color: var(--indigo); font-weight: 600">MVP DELIVERED</span>
+              </div>
+              <div class="video-viewport">
+                <span class="viewport-label">PRIMARY PETEPETE FOOTAGE</span>
+                <div class="viewport-title">Creator Profile &amp; Supporter Flow</div>
+                <div class="viewport-caption">media-source/work/petepete/hero-loop.mp4</div>
+              </div>
+              <div class="frame-footer">
+                <span>Client: Petepete</span>
+                <span>Outcome: MVP Delivered (Launch Paused)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PILLARS -->
+      <section class="pillars-section" id="pillars">
+        <div class="container">
+          <div class="section-eyebrow">The Four Operating Pillars</div>
+          <div class="pillars-grid">
+            <div class="pillar-col">
+              <div class="pillar-rule"></div>
+              <div class="pillar-title">MVP to Production</div>
+              <div class="pillar-desc">
+                We ship deployable software with databases, authentication, and continuous delivery.
+                We never leave you with an unusable mock.
+              </div>
+            </div>
+            <div class="pillar-col">
+              <div class="pillar-rule"></div>
+              <div class="pillar-title">Scope in Writing</div>
+              <div class="pillar-desc">
+                Deliverables, milestone timelines, and technical boundaries defined in a written MoU
+                before any development starts.
+              </div>
+            </div>
+            <div class="pillar-col">
+              <div class="pillar-rule"></div>
+              <div class="pillar-title">Startup-Friendly Pricing</div>
+              <div class="pillar-desc">
+                Fair, milestone-linked pricing designed for founder runway. Clear quotes agreed
+                before committing resources.
+              </div>
+            </div>
+            <div class="pillar-col">
+              <div class="pillar-rule"></div>
+              <div class="pillar-title">Full 8-Person Unit</div>
+              <div class="pillar-desc">
+                PM, UI/UX, 2 Frontend, 2 Backend, QA, and DevOps on every project. One unified team
+                handling the whole lifecycle.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FEATURED WORK: PETEPETE -->
+      <section class="work-section" id="work">
+        <div class="container">
+          <div class="section-eyebrow">Delivered Proof &bull; Featured Project</div>
+          <div class="work-grid">
+            <div class="hero-showcase-frame">
+              <div class="frame-bar">
+                <span class="browser-pill">petepete-walkthrough.mp4</span>
+                <span>1080p 60fps</span>
+              </div>
+              <div class="video-viewport" style="aspect-ratio: 16/9">
+                <span class="viewport-label">CASE STUDY CINEMA</span>
+                <div class="viewport-title">Creator Tipping Platform</div>
+                <div class="viewport-caption">
+                  Complete web application architecture and payment gateway hooks
+                </div>
+              </div>
+              <div class="frame-footer">
+                <span>Delivery Scope: Full MVP</span>
+                <span>Launch: Paused by Client</span>
+              </div>
+            </div>
+
+            <div class="work-header">
+              <h2>Petepete: Donation platform for content creators</h2>
+              <p class="work-body">
+                A web application built from initial specification to a production-ready MVP,
+                enabling digital creators to accept fan donations and manage follower subscriptions.
+              </p>
+              <div class="work-metrics-grid">
+                <div class="metric-col">
+                  <div class="metric-label">Delivery Scope</div>
+                  <div class="metric-value">Production MVP</div>
+                </div>
+                <div class="metric-col">
+                  <div class="metric-label">Assigned Specialists</div>
+                  <div class="metric-value">8 Team Members</div>
+                </div>
+                <div class="metric-col">
+                  <div class="metric-label">Launch Status</div>
+                  <div class="metric-value">Client Paused</div>
+                </div>
+                <div class="metric-col">
+                  <div class="metric-label">Scope Protocol</div>
+                  <div class="metric-value">Written MoU</div>
+                </div>
+              </div>
+              <div class="chips">
+                <span class="chip">Next.js App Router</span>
+                <span class="chip">Node.js</span>
+                <span class="chip">PostgreSQL</span>
+                <span class="chip">Tailwind CSS</span>
+                <span class="chip">Docker CI/CD</span>
+              </div>
+              <a href="#case-study" class="btn btn-primary">Read Petepete case study &rarr;</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SERVICES SNIPPET -->
+      <section class="services-section" id="services">
+        <div class="container">
+          <div class="services-flow-header">
+            <div class="section-eyebrow">The Engagement Protocol</div>
+            <h2>From written scope to production delivery</h2>
+            <p style="color: var(--ink-muted); font-size: 18px">
+              Every project operates under a written covenant with predefined acceptance gates. No
+              surprises, no billing drift.
+            </p>
+          </div>
+          <div class="flow-columns">
+            <div class="flow-card accent-card">
+              <div class="flow-step-num">&sect; 01 &bull; ANCHOR</div>
+              <div class="flow-title">Written Scope &amp; MoU</div>
+              <div class="flow-desc">
+                Full feature specification, milestone schedule, and fixed pricing agreed in writing
+                before kickoff.
+              </div>
+            </div>
+            <div class="flow-card">
+              <div class="flow-step-num">&sect; 02</div>
+              <div class="flow-title">UI/UX Blueprint</div>
+              <div class="flow-desc">
+                Interactive wireframes and high-fidelity interface design. Verified and signed off
+                before engineering starts.
+              </div>
+            </div>
+            <div class="flow-card">
+              <div class="flow-step-num">&sect; 03</div>
+              <div class="flow-title">Full Build &amp; QA</div>
+              <div class="flow-desc">
+                2 Frontend + 2 Backend engineers deliver the application, tested end-to-end by our
+                QA specialist.
+              </div>
+            </div>
+            <div class="flow-card">
+              <div class="flow-step-num">&sect; 04</div>
+              <div class="flow-title">Production Handover</div>
+              <div class="flow-desc">
+                DevOps deploys to live infrastructure with automated CI/CD pipelines, documentation,
+                and handover training.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

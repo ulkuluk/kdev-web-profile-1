@@ -5,10 +5,10 @@ import { iconNames } from "@/lib/icons";
 
 export const iconSchema = z.enum(iconNames);
 
-/** A URL, or "" meaning "not provided yet" (the UI hides the element). */
-export const optionalUrl = z.union([z.url(), z.literal("")]);
+/** URL, or "" meaning "not provided yet" (the UI hides the element). */
+export const optionalUrl = z.union([z.string().url(), z.literal("")]);
 
-/** Team roles. Used by team members and by the process-step ownership mapping. */
+/** Team roles across the 8-person delivery unit. */
 export const roles = [
   "Project Manager",
   "UI/UX Designer",
@@ -22,16 +22,19 @@ export type Role = z.infer<typeof roleSchema>;
 
 export const nonEmpty = z.string().trim().min(1);
 
-/** Anchor ids of every page section. Sections render with these; nav links are validated against them. */
+/** Section anchor IDs and page routes. */
 export const sectionIds = {
-  hero: "top",
-  clients: "clients",
-  services: "services",
-  work: "work",
-  process: "process",
-  team: "team",
-  stack: "stack",
-  next: "next",
-  faq: "faq",
-  contact: "contact",
+  hero: "hero",
+  pillars: "pillars",
+  featuredWork: "featured-work",
+  howItWorks: "how-it-works",
+  cta: "cta",
+} as const;
+
+export const routes = {
+  home: "/",
+  services: "/services",
+  work: "/work",
+  about: "/about",
+  contact: "/contact",
 } as const;

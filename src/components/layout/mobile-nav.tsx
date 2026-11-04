@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { NavContent } from "@/content/nav";
@@ -26,30 +27,39 @@ export function MobileNav({ items, cta, labels }: MobileNavProps) {
         aria-controls="mobile-menu"
         aria-label={open ? labels.closeMenu : labels.openMenu}
         onClick={() => setOpen((o) => !o)}
-        className="inline-flex size-11 items-center justify-center rounded-sm hover:bg-muted"
+        className="inline-flex size-10 items-center justify-center rounded-xs border border-border bg-card hover:bg-muted"
       >
-        {open ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
+        {open ? (
+          <X className="size-5" aria-hidden="true" />
+        ) : (
+          <Menu className="size-5" aria-hidden="true" />
+        )}
       </button>
       {open && (
         <nav
           id="mobile-menu"
           aria-label={labels.primaryNav}
-          className="glass absolute inset-x-0 top-full border-x-0 px-5 py-4"
+          className="shadow-hard absolute inset-x-0 top-full border-b border-border-dark bg-background px-5 py-5"
         >
-          <ul className="flex flex-col">
+          <ul className="flex flex-col space-y-1">
             {items.map((item) => (
               <li key={item.href}>
-                <a
+                <Link
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className="block rounded-sm px-3 py-3 font-medium hover:bg-muted"
+                  className="block rounded-xs px-3 py-2.5 font-mono text-xs font-semibold tracking-wider text-foreground uppercase hover:bg-muted"
                 >
                   {item.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
-          <Button href={cta.href} onClick={() => setOpen(false)} className="mt-3 w-full">
+          <Button
+            href={cta.href}
+            onClick={() => setOpen(false)}
+            variant="primary"
+            className="mt-4 w-full"
+          >
             {cta.label}
           </Button>
         </nav>

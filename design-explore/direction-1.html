@@ -1,0 +1,811 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>KDEV Direction 1 — The Engineering Spec</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Epilogue:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #f4f3ef;
+        --surface: #ffffff;
+        --ink: #12151a;
+        --ink-muted: #525965;
+        --accent: #0f766e;
+        --accent-tint: #e6f4f2;
+        --border: #dcd9d0;
+        --border-dark: #12151a;
+        --font-display: "Epilogue", sans-serif;
+        --font-body: "Source Serif 4", Georgia, serif;
+        --font-mono: "IBM Plex Mono", monospace;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font-family: var(--font-body);
+        font-size: 17px;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      /* Top bar */
+      header {
+        border-bottom: 1px solid var(--border);
+        background: var(--bg);
+        position: sticky;
+        top: 0;
+        z-index: 50;
+      }
+      .header-inner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 64px;
+      }
+      .brand {
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+        text-decoration: none;
+        color: var(--ink);
+      }
+      .brand-mark {
+        font-family: var(--font-display);
+        font-weight: 800;
+        font-size: 20px;
+        letter-spacing: -0.5px;
+      }
+      .brand-tag {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        color: var(--accent);
+        letter-spacing: 0.5px;
+      }
+      nav {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+      }
+      nav a {
+        font-family: var(--font-mono);
+        font-size: 13px;
+        color: var(--ink);
+        text-decoration: none;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 18px;
+        font-family: var(--font-mono);
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        border: 1px solid var(--border-dark);
+        cursor: pointer;
+        transition:
+          background 0.15s ease,
+          color 0.15s ease;
+      }
+      .btn-primary {
+        background: var(--ink);
+        color: #fff;
+        border-color: var(--ink);
+      }
+      .btn-primary:hover {
+        background: var(--accent);
+        border-color: var(--accent);
+      }
+      .btn-secondary {
+        background: transparent;
+        color: var(--ink);
+      }
+      .btn-secondary:hover {
+        background: var(--surface);
+      }
+
+      /* Direction meta indicator */
+      .direction-banner {
+        background: var(--ink);
+        color: #fff;
+        font-family: var(--font-mono);
+        font-size: 12px;
+        padding: 8px 0;
+      }
+      .direction-banner-inner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .direction-badge {
+        background: var(--accent);
+        color: #fff;
+        padding: 2px 8px;
+        font-weight: 600;
+        font-size: 11px;
+      }
+
+      /* HERO */
+      /*
+     * Headline options considered:
+     * 1. "From first sketch to shipped product, under one roof."
+     * 2. "We take startup ideas to production-ready MVPs with written scope." <- chosen
+     * 3. "No prototypes left behind: full-team delivery for early-stage founders."
+     */
+      .hero {
+        padding: 64px 0 80px;
+        border-bottom: 1px solid var(--border);
+      }
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.15fr 1fr;
+        gap: 48px;
+        align-items: start;
+      }
+      .hero-meta {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--accent);
+        font-weight: 600;
+        margin-bottom: 16px;
+        display: flex;
+        gap: 16px;
+      }
+      .hero h1 {
+        font-family: var(--font-display);
+        font-size: 48px;
+        line-height: 1.1;
+        font-weight: 800;
+        letter-spacing: -1.5px;
+        color: var(--ink);
+        margin-bottom: 24px;
+      }
+      .hero-subhead {
+        font-size: 19px;
+        line-height: 1.5;
+        color: var(--ink-muted);
+        margin-bottom: 32px;
+        max-width: 540px;
+      }
+      .hero-actions {
+        display: flex;
+        gap: 14px;
+        margin-bottom: 44px;
+        flex-wrap: wrap;
+      }
+
+      /* Signature element: The Written MoU Docket */
+      .mou-docket {
+        border: 1px solid var(--border-dark);
+        background: var(--surface);
+        box-shadow: 4px 4px 0px var(--border-dark);
+      }
+      .docket-header {
+        background: var(--ink);
+        color: #fff;
+        padding: 10px 16px;
+        font-family: var(--font-mono);
+        font-size: 12px;
+        display: flex;
+        justify-content: space-between;
+        letter-spacing: 0.5px;
+      }
+      .docket-body {
+        padding: 20px;
+      }
+      .clause-row {
+        display: grid;
+        grid-template-columns: 70px 1fr auto;
+        gap: 12px;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 14px;
+        align-items: baseline;
+      }
+      .clause-row:last-child {
+        border-bottom: none;
+      }
+      .clause-num {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .clause-title {
+        font-weight: 600;
+        color: var(--ink);
+      }
+      .clause-desc {
+        font-size: 13px;
+        color: var(--ink-muted);
+        margin-top: 2px;
+      }
+      .clause-status {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        padding: 2px 8px;
+        border: 1px solid var(--border);
+        background: var(--bg);
+        white-space: nowrap;
+      }
+      .clause-status.locked {
+        background: var(--accent-tint);
+        color: var(--accent);
+        border-color: var(--accent);
+        font-weight: 600;
+      }
+
+      /* Hero media frame */
+      .hero-media-wrapper {
+        position: relative;
+      }
+      .device-frame {
+        border: 1px solid var(--border-dark);
+        background: var(--surface);
+        box-shadow: 6px 6px 0px var(--border-dark);
+      }
+      .device-topbar {
+        border-bottom: 1px solid var(--border);
+        padding: 8px 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #eceae4;
+        font-family: var(--font-mono);
+        font-size: 11px;
+      }
+      .window-dots {
+        display: flex;
+        gap: 6px;
+      }
+      .window-dot {
+        width: 9px;
+        height: 9px;
+        border: 1px solid var(--border-dark);
+        background: #fff;
+      }
+      .media-slot {
+        position: relative;
+        background: #20242c;
+        aspect-ratio: 16/10;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #e2e8f0;
+        padding: 24px;
+        text-align: center;
+        overflow: hidden;
+      }
+      .media-grid-bg {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+        background-size: 24px 24px;
+      }
+      .media-badge {
+        position: relative;
+        z-index: 2;
+        font-family: var(--font-mono);
+        font-size: 11px;
+        padding: 4px 10px;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        background: rgba(0, 0, 0, 0.6);
+        margin-bottom: 12px;
+        color: #fff;
+      }
+      .media-title {
+        position: relative;
+        z-index: 2;
+        font-family: var(--font-display);
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+      }
+      .media-caption {
+        position: relative;
+        z-index: 2;
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: #94a3b8;
+        margin-top: 6px;
+      }
+      .device-footer {
+        padding: 12px 16px;
+        display: flex;
+        justify-content: space-between;
+        border-top: 1px solid var(--border);
+        font-family: var(--font-mono);
+        font-size: 11px;
+        color: var(--ink-muted);
+        background: var(--surface);
+      }
+
+      /* PILLARS STRIP */
+      .pillars-strip {
+        padding: 56px 0;
+        border-bottom: 1px solid var(--border);
+        background: var(--surface);
+      }
+      .section-eyebrow {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        color: var(--accent);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 12px;
+      }
+      .pillars-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+        margin-top: 24px;
+      }
+      .pillar-card {
+        border-left: 2px solid var(--border-dark);
+        padding-left: 18px;
+      }
+      .pillar-num {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--accent);
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+      .pillar-title {
+        font-family: var(--font-display);
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--ink);
+        margin-bottom: 8px;
+      }
+      .pillar-body {
+        font-size: 14px;
+        color: var(--ink-muted);
+        line-height: 1.5;
+      }
+
+      /* FEATURED WORK */
+      .featured-work {
+        padding: 72px 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .work-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        gap: 48px;
+        align-items: center;
+        margin-top: 32px;
+      }
+      .work-content h2 {
+        font-family: var(--font-display);
+        font-size: 36px;
+        line-height: 1.15;
+        font-weight: 800;
+        letter-spacing: -1px;
+        margin-bottom: 16px;
+      }
+      .work-summary {
+        font-size: 18px;
+        line-height: 1.55;
+        color: var(--ink-muted);
+        margin-bottom: 24px;
+      }
+      .facts-list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        margin-bottom: 28px;
+        padding: 16px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+      }
+      .fact-item .fact-label {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        color: var(--ink-muted);
+        text-transform: uppercase;
+      }
+      .fact-item .fact-value {
+        font-family: var(--font-display);
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--ink);
+        margin-top: 2px;
+      }
+      .chip-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 28px;
+      }
+      .chip {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        padding: 4px 10px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: var(--ink);
+      }
+
+      /* SERVICES SNIPPET */
+      .services-snippet {
+        padding: 72px 0;
+        background: var(--surface);
+      }
+      .services-header {
+        max-width: 680px;
+        margin-bottom: 40px;
+      }
+      .services-header h2 {
+        font-family: var(--font-display);
+        font-size: 36px;
+        font-weight: 800;
+        letter-spacing: -1px;
+        margin-bottom: 12px;
+      }
+      .flow-steps {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+      }
+      .flow-step {
+        border: 1px solid var(--border);
+        background: var(--bg);
+        padding: 20px;
+        position: relative;
+      }
+      .flow-step.highlight {
+        border: 2px solid var(--border-dark);
+        background: #fff;
+        box-shadow: 3px 3px 0px var(--border-dark);
+      }
+      .step-tag {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        color: var(--accent);
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+      .step-title {
+        font-family: var(--font-display);
+        font-size: 17px;
+        font-weight: 700;
+        margin-bottom: 8px;
+      }
+      .step-body {
+        font-size: 13px;
+        color: var(--ink-muted);
+        line-height: 1.5;
+      }
+
+      @media (max-width: 900px) {
+        .hero-grid,
+        .work-grid {
+          grid-template-columns: 1fr;
+          gap: 36px;
+        }
+        .pillars-grid,
+        .flow-steps {
+          grid-template-columns: 1fr 1fr;
+        }
+        .hero h1 {
+          font-size: 36px;
+        }
+      }
+      @media (max-width: 600px) {
+        .pillars-grid,
+        .flow-steps,
+        .facts-list {
+          grid-template-columns: 1fr;
+        }
+        nav {
+          display: none;
+        }
+        .hero {
+          padding: 40px 0 56px;
+        }
+        .hero h1 {
+          font-size: 30px;
+          letter-spacing: -0.5px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="direction-banner">
+      <div class="direction-banner-inner container">
+        <div><strong>DIRECTION 1</strong> / The Working Draft (Engineering Spec)</div>
+        <div>
+          <span class="direction-badge">AA VERIFIED 7.1:1+</span> Epilogue + Source Serif 4 + IBM
+          Plex Mono
+        </div>
+      </div>
+    </div>
+
+    <header>
+      <div class="header-inner container">
+        <a href="#" class="brand">
+          <span class="brand-mark">KDEV</span>
+          <span class="brand-tag">[8-person unit]</span>
+        </a>
+        <nav>
+          <a href="#work">Work</a>
+          <a href="#pillars">Pillars</a>
+          <a href="#services">Services</a>
+          <a href="#about">About</a>
+        </nav>
+        <a href="#contact" class="btn btn-primary">Start MVP</a>
+      </div>
+    </header>
+
+    <main>
+      <!-- HERO SECTION -->
+      <section class="hero">
+        <div class="hero-grid container">
+          <div class="hero-text">
+            <div class="hero-meta">
+              <span>MEMORANDUM OF DELIVERY</span>
+              <span>&bull;</span>
+              <span>NO PROTOYPE DROP-OFF</span>
+            </div>
+            <h1>We take startup ideas to production-ready MVPs with written scope.</h1>
+            <p class="hero-subhead">
+              Scope, milestones, and price agreed in writing before any code is written. One
+              dedicated cross-functional team of 8: from first commit to live release.
+            </p>
+            <div class="hero-actions">
+              <a href="#contact" class="btn btn-primary">Start your MVP</a>
+              <a href="#work" class="btn btn-secondary">See Petepete case study</a>
+            </div>
+
+            <!-- SIGNATURE COMPONENT: THE SIGNED SCOPE MOU DOCKET -->
+            <div class="mou-docket">
+              <div class="docket-header">
+                <span>ENGAGEMENT SPECIFICATION: PROTOCOL-01</span>
+                <span>VERIFIED COVENANT</span>
+              </div>
+              <div class="docket-body">
+                <div class="clause-row">
+                  <span class="clause-num">&sect; 01.1</span>
+                  <div>
+                    <div class="clause-title">Written Scope &amp; MoU</div>
+                    <div class="clause-desc">
+                      Feature boundaries, timeline milestones, and fixed delivery pricing documented
+                      before kickoff.
+                    </div>
+                  </div>
+                  <span class="clause-status locked">MANDATORY</span>
+                </div>
+                <div class="clause-row">
+                  <span class="clause-num">&sect; 01.2</span>
+                  <div>
+                    <div class="clause-title">Production Readiness Standard</div>
+                    <div class="clause-desc">
+                      Tested by dedicated QA and packaged with CI/CD by DevOps. Not an abandoned
+                      demo.
+                    </div>
+                  </div>
+                  <span class="clause-status locked">GUARANTEED</span>
+                </div>
+                <div class="clause-row">
+                  <span class="clause-num">&sect; 01.3</span>
+                  <div>
+                    <div class="clause-title">8-Specialist Delivery Unit</div>
+                    <div class="clause-desc">
+                      PM, UI/UX, 2 Frontend, 2 Backend, QA, and DevOps assigned to every project.
+                    </div>
+                  </div>
+                  <span class="clause-status">COMMITTED</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-media-wrapper">
+            <div class="device-frame">
+              <div class="device-topbar">
+                <div class="window-dots">
+                  <span class="window-dot"></span>
+                  <span class="window-dot"></span>
+                  <span class="window-dot"></span>
+                </div>
+                <span>petepete.app / preview / creator-portal</span>
+                <span style="color: var(--accent); font-weight: 600">MVP DELIVERED</span>
+              </div>
+              <div class="media-slot">
+                <div class="media-grid-bg"></div>
+                <span class="media-badge">PRIMARY FOOTAGE SLOT</span>
+                <div class="media-title">Petepete Creator Portal</div>
+                <div class="media-caption">media-source/work/petepete/hero-loop.mp4</div>
+              </div>
+              <div class="device-footer">
+                <span>Client: Petepete</span>
+                <span>Delivered: Production MVP</span>
+                <span>Launch: Paused by Client</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PILLARS STRIP -->
+      <section class="pillars-strip" id="pillars">
+        <div class="container">
+          <div class="section-eyebrow">The Four Operating Commitments</div>
+          <div class="pillars-grid">
+            <div class="pillar-card">
+              <div class="pillar-num">01 / DISCIPLINE</div>
+              <div class="pillar-title">MVP to Production</div>
+              <div class="pillar-body">
+                We ship real software with databases, auth, and automated deployments. We never stop
+                at prototypes.
+              </div>
+            </div>
+            <div class="pillar-card">
+              <div class="pillar-num">02 / CERTAINTY</div>
+              <div class="pillar-title">Written MoU Scope</div>
+              <div class="pillar-body">
+                Clear milestones, deliverable checklists, and boundaries agreed in writing before
+                writing a single line of code.
+              </div>
+            </div>
+            <div class="pillar-card">
+              <div class="pillar-num">03 / REALISM</div>
+              <div class="pillar-title">Startup-Friendly Pricing</div>
+              <div class="pillar-body">
+                Fair, milestone-based pricing designed for early-stage capital. Never inflated;
+                never unbacked promises.
+              </div>
+            </div>
+            <div class="pillar-card">
+              <div class="pillar-num">04 / COVERAGE</div>
+              <div class="pillar-title">The Complete 8-Unit</div>
+              <div class="pillar-body">
+                PM, UI/UX designer, 2 frontend, 2 backend, QA engineer, and DevOps on every
+                engagement.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FEATURED WORK: PETEPETE -->
+      <section class="featured-work" id="work">
+        <div class="container">
+          <div class="section-eyebrow">Proof of Delivery &bull; Case Study</div>
+          <div class="work-grid">
+            <div class="device-frame">
+              <div class="device-topbar">
+                <div class="window-dots">
+                  <span class="window-dot"></span>
+                  <span class="window-dot"></span>
+                  <span class="window-dot"></span>
+                </div>
+                <span>petepete-walkthrough.mp4</span>
+                <span>1080p &bull; 60fps</span>
+              </div>
+              <div class="media-slot" style="aspect-ratio: 16/9">
+                <div class="media-grid-bg"></div>
+                <span class="media-badge">FEATURED CASE STUDY MEDIA</span>
+                <div class="media-title">Creator Tipping &amp; Subscriber Core</div>
+                <div class="media-caption">
+                  Production-tested multi-tenant platform architecture
+                </div>
+              </div>
+              <div class="device-footer">
+                <span>Scope: Full MVP</span>
+                <span>Status: Delivered &bull; Paused</span>
+                <span>Role: End-to-End Build</span>
+              </div>
+            </div>
+
+            <div class="work-content">
+              <h2>Petepete: Donation platform for content creators</h2>
+              <p class="work-summary">
+                A web platform enabling digital creators to establish independent fan support feeds,
+                donation tiers, and supporter analytics with zero platform lock-in.
+              </p>
+              <div class="facts-list">
+                <div class="fact-item">
+                  <div class="fact-label">Delivery Scope</div>
+                  <div class="fact-value">Production MVP</div>
+                </div>
+                <div class="fact-item">
+                  <div class="fact-label">Assigned Team</div>
+                  <div class="fact-value">8 Specialists</div>
+                </div>
+                <div class="fact-item">
+                  <div class="fact-label">Launch Readiness</div>
+                  <div class="fact-value">Complete (Client Paused)</div>
+                </div>
+                <div class="fact-item">
+                  <div class="fact-label">Contract Protocol</div>
+                  <div class="fact-value">Written MoU Scope</div>
+                </div>
+              </div>
+              <div class="chip-list">
+                <span class="chip">Next.js</span>
+                <span class="chip">Node.js</span>
+                <span class="chip">PostgreSQL</span>
+                <span class="chip">Tailwind CSS</span>
+                <span class="chip">Docker CI/CD</span>
+              </div>
+              <a href="#case-study" class="btn btn-primary">Read Petepete case study &rarr;</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SERVICES SNIPPET -->
+      <section class="services-snippet" id="services">
+        <div class="container">
+          <div class="services-header">
+            <div class="section-eyebrow">The Engagement Protocol</div>
+            <h2>From scope document to production handover</h2>
+            <p style="color: var(--ink-muted); font-size: 18px">
+              We do not sell open-ended developer hours. Every engagement follows an exact sequence
+              with signed verification criteria.
+            </p>
+          </div>
+          <div class="flow-steps">
+            <div class="flow-step highlight">
+              <div class="step-tag">STAGE 01 &bull; ANCHOR</div>
+              <div class="step-title">Written Scope &amp; MoU</div>
+              <div class="step-body">
+                We draft the full technical boundary, milestone deliverables, and fixed pricing.
+                Both sides sign before any code begins.
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="step-tag">STAGE 02</div>
+              <div class="step-title">Interactive Design</div>
+              <div class="step-body">
+                High-fidelity UI and user journey mapping. You review and approve exact screens
+                before frontend implementation.
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="step-tag">STAGE 03</div>
+              <div class="step-title">Production Build &amp; QA</div>
+              <div class="step-body">
+                2 Frontend + 2 Backend engineers build against acceptance criteria, continuously
+                validated by our dedicated QA.
+              </div>
+            </div>
+            <div class="flow-step">
+              <div class="step-tag">STAGE 04</div>
+              <div class="step-title">DevOps &amp; Handover</div>
+              <div class="step-body">
+                Production infrastructure deployment, automated pipelines, documentation, and
+                operational training.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,141 @@
+---
+slug: "petepete"
+title: "Petepete"
+tagline: "Donation and membership platform for digital content creators"
+statusLabel: "MVP Delivered · Launch Paused"
+clientDisclosure: "named"
+clientName: "Petepete"
+timeframe: "8 weeks"
+teamSize: 8
+ourRole:
+  - "Product Management"
+  - "UI/UX Design"
+  - "Frontend Engineering"
+  - "Backend Engineering"
+  - "QA Testing"
+  - "DevOps CI/CD"
+summary: "A production-ready creator support application featuring custom tipping tiers, supporter feeds, and payment gateway hooks, built from written MoU to production deployment."
+heroMedia:
+  type: "video"
+  src: "/work/petepete/petepete-walkthrough.mp4"
+  poster: "/work/petepete/hero-poster.webp"
+  alt: "Petepete Creator Portal walkthrough demonstration"
+featured: true
+order: 1
+stack:
+  - label: "Frontend"
+    items:
+      - name: "Next.js App Router"
+        why: "Fast server-side rendering for creator profile pages and supporter feeds."
+      - name: "Tailwind CSS"
+        why: "Predictable design system styling with zero runtime stylesheet overhead."
+      - name: "TypeScript"
+        why: "End-to-end interface contracts preventing runtime type errors."
+  - label: "Backend & Storage"
+    items:
+      - name: "Node.js"
+        why: "Efficient handling of asynchronous webhooks from payment gateways."
+      - name: "PostgreSQL"
+        why: "Relational integrity for creator ledger transactions and account balances."
+  - label: "Infrastructure & Testing"
+    items:
+      - name: "Docker"
+        why: "Isolated containerization for zero-drift deployment across environments."
+      - name: "GitHub Actions"
+        why: "Continuous integration pipeline running automated tests before deployment."
+---
+
+## Overview
+
+<Callout type="note" title="Production Verification">
+  This case study documents an MVP delivered to production-ready status. Prior to public go-live,
+  the client chose to pause marketing operations. All features below are functional, tested, and
+  deployable.
+</Callout>
+
+TODO: Overview narrative detailing how Petepete engaged KDEV to design and build an independent creator funding platform within an 8-week production window.
+
+## The Problem
+
+TODO: Problem statement explaining the fragmentation digital creators face with platform transaction fees, lack of direct supporter relationships, and inflexible tipping structures.
+
+## Scope We Agreed
+
+Under our binding written MoU, KDEV agreed to the following deliverable boundaries before writing code:
+
+- **Creator Management:** Custom profile URLs, biographical links, and visual branding controls.
+- **Supporter Tiers:** One-time tipping flow and recurring monthly membership subscriptions.
+- **Supporter Stream:** Private supporter updates and activity feeds with rich media embeds.
+- **Payout Ledger:** Transaction history export and webhook verification with payment gateways.
+
+<DeviceFrame
+  title="petepete.app / creator-admin / ledger"
+  caption="Creator payout and transaction overview dashboard"
+>
+  <Figure
+    src="/work/petepete/ledger-preview.webp"
+    alt="Petepete Creator Ledger Screenshot"
+    caption="Real-time transaction stream and supporter ledger module."
+  />
+</DeviceFrame>
+
+## How We Built It
+
+<Timeline>
+  <TimelineItem
+    date="Week 01"
+    title="Written MoU & Functional Scope"
+    description="TODO: Specification drafting, feature boundary lock, and milestone signing."
+  />
+  <TimelineItem
+    date="Week 02–03"
+    title="UI/UX Prototyping & Flow Approval"
+    description="TODO: Clickable Figma flows and responsive design sign-off with founder."
+  />
+  <TimelineItem
+    date="Week 04–06"
+    title="Full-Stack Implementation"
+    description="TODO: Parallel frontend component build and database schema engineering."
+  />
+  <TimelineItem
+    date="Week 07"
+    title="QA Regression & Cross-Device Audit"
+    description="TODO: Dedicated QA testing across mobile iOS/Android and desktop browsers."
+  />
+  <TimelineItem
+    date="Week 08"
+    title="Production Infrastructure Handover"
+    description="TODO: Docker container packaging, CI/CD automated release, and code handover."
+  />
+</Timeline>
+
+## Architecture & Key Decisions
+
+TODO: Architectural decisions narrative detailing the relational schema design, idempotency keys for payment processing webhooks, and tokenized session management.
+
+<Callout type="architecture" title="Webhook Idempotency Key Design">
+  TODO: Explain how payment notification webhooks were handled to prevent double-crediting creator
+  wallets during transient network retries.
+</Callout>
+
+## Challenges & Solutions
+
+TODO: Outline key engineering challenges encountered, including edge-case handling in payment provider webhooks and performance optimization for media-heavy creator feeds.
+
+## Outcome
+
+<Stat value="8" label="Specialists in Delivery Unit" />
+
+The Petepete platform was completed to full production specification on schedule. While the client ultimately decided to pause their public marketing rollout due to internal strategic priorities, the software remains complete, verified by our QA specialist, packaged with automated CI/CD pipelines, and fully handed over in repository format.
+
+## What We Learned
+
+TODO: Retrospective notes on balancing founder roadmap desires with strict MVP boundaries under a fixed written scope agreement.
+
+## Built With
+
+Our team chose technologies that maximize founder runway, maintainability, and deployment portability:
+
+- **Next.js App Router:** Server components deliver instant page loads for creator landing pages.
+- **PostgreSQL:** Transaction-safe ledger design ensuring immutable balance tracking.
+- **Docker & GitHub Actions:** Infrastructure reproducible on any cloud host with zero vendor lock-in.

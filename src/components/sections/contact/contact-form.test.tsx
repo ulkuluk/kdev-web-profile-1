@@ -16,10 +16,19 @@ vi.mock("@/lib/env", () => envMock);
 import { ContactForm } from "./contact-form";
 
 const fill = async (user: ReturnType<typeof userEvent.setup>) => {
-  await user.type(screen.getByLabelText(/^Name/), "Ada");
-  await user.type(screen.getByLabelText(/^Email/), "ada@company.com");
-  await user.selectOptions(screen.getByLabelText(/^Project type/), "Web application");
-  await user.type(screen.getByLabelText(/^Message/), "We need a customer portal.");
+  await user.type(screen.getByLabelText(new RegExp(`^${contact.form.fields.name}`)), "Ada");
+  await user.type(
+    screen.getByLabelText(new RegExp(`^${contact.form.fields.email}`)),
+    "ada@company.com",
+  );
+  await user.selectOptions(
+    screen.getByLabelText(new RegExp(`^${contact.form.fields.stage}`)),
+    contact.form.stages[0]!.label,
+  );
+  await user.type(
+    screen.getByLabelText(new RegExp(`^${contact.form.fields.message}`)),
+    "We need a customer portal.",
+  );
 };
 
 describe("ContactForm", () => {
@@ -31,11 +40,14 @@ describe("ContactForm", () => {
   it("shows inline errors and a focused error summary when invalid", async () => {
     const user = userEvent.setup();
     render(<ContactForm content={contact} email="a@b.co" />);
-    await user.click(screen.getByRole("button", { name: contact.form.submit }));
+    await user.click(screen.getByRole("button", { name: new RegExp(contact.form.submit) }));
     const summary = await screen.findByRole("alert");
     expect(summary).toHaveTextContent(contact.errors.summaryTitle);
     await waitFor(() => expect(summary).toHaveFocus());
-    expect(screen.getByLabelText(/^Name/)).toHaveAttribute("aria-invalid", "true");
+    expect(screen.getByLabelText(new RegExp(`^${contact.form.fields.name}`))).toHaveAttribute(
+      "aria-invalid",
+      "true",
+    );
   });
 
   it("shows loading, then success, and posts JSON to the endpoint", async () => {
@@ -45,9 +57,11 @@ describe("ContactForm", () => {
     const user = userEvent.setup();
     render(<ContactForm content={contact} email="a@b.co" />);
     await fill(user);
-    await user.click(screen.getByRole("button", { name: contact.form.submit }));
+    await user.click(screen.getByRole("button", { name: new RegExp(contact.form.submit) }));
 
-    expect(await screen.findByRole("button", { name: contact.form.sending })).toBeDisabled();
+    expect(
+      await screen.findByRole("button", { name: new RegExp(contact.form.sending) }),
+    ).toBeDisabled();
     resolve(new Response("{}", { status: 200 }));
     expect(await screen.findByText(contact.status.successTitle)).toBeInTheDocument();
 
@@ -64,10 +78,10 @@ describe("ContactForm", () => {
     const user = userEvent.setup();
     render(<ContactForm content={contact} email="a@b.co" />);
     await fill(user);
-    await user.click(screen.getByRole("button", { name: contact.form.submit }));
-    expect(await screen.findByText(contact.status.errorTitle)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: contact.status.retry })).toBeEnabled();
-    expect(screen.getByLabelText(/^Name/)).toHaveValue("Ada"); // input is kept for retry
+    await user.click(screen.getByRole("button", { name: new RegExp(contact.form.submit) }));
+    expect(await screen.findByText(new RegExp(contact.status.errorTitle))).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: new RegExp(contact.status.retry) })).toBeEnabled();
+    expect(screen.getByLabelText(new RegExp(`^${contact.form.fields.name}`))).toHaveValue("Ada"); // input is kept for retry
   });
 
   it("does not send anything when the honeypot is filled (bot)", async () => {
@@ -77,7 +91,7 @@ describe("ContactForm", () => {
     const { container } = render(<ContactForm content={contact} email="a@b.co" />);
     await fill(user);
     await user.type(container.querySelector<HTMLInputElement>('input[name="website"]')!, "spam");
-    await user.click(screen.getByRole("button", { name: contact.form.submit }));
+    await user.click(screen.getByRole("button", { name: new RegExp(contact.form.submit) }));
     await screen.findByText(contact.status.successTitle);
     expect(fetchMock).not.toHaveBeenCalled();
   });
@@ -89,7 +103,7 @@ describe("ContactForm", () => {
     const user = userEvent.setup();
     render(<ContactForm content={contact} email="a@b.co" />);
     await fill(user);
-    await user.click(screen.getByRole("button", { name: contact.form.submit }));
+    await user.click(screen.getByRole("button", { name: new RegExp(contact.form.submit) }));
     expect(await screen.findByText(contact.status.mailtoNote)).toBeInTheDocument();
     expect(fetchMock).not.toHaveBeenCalled();
   });

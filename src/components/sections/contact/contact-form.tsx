@@ -13,11 +13,11 @@ type Status = "idle" | "sending" | "sent" | "error" | "mailto";
 
 type ContactFormProps = {
   content: ContactContent;
-  /** Used by the mailto fallback when no form endpoint is configured. */
+  /** Used by mailto fallback when no form endpoint is configured. */
   email: string;
 };
 
-const fieldOrder = ["name", "email", "projectType", "message"] as const;
+const fieldOrder = ["name", "email", "stage", "message"] as const;
 
 export function ContactForm({ content, email }: ContactFormProps) {
   const { form, errors: msgs, status: copy } = content;
@@ -31,7 +31,7 @@ export function ContactForm({ content, email }: ContactFormProps) {
     (key: keyof FormValues) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
       setValues((v) => ({ ...v, [key]: e.target.value }));
-      // Clear a field's error as soon as the user edits it.
+      // Clear field's error as soon as the user edits it.
       if (key in errors) setErrors((prev) => ({ ...prev, [key]: undefined }));
     };
 
@@ -40,7 +40,6 @@ export function ContactForm({ content, email }: ContactFormProps) {
     const found = validateForm(values, msgs);
     setErrors(found);
     if (Object.keys(found).length > 0) {
-      // Move focus to the error summary so keyboard / screen-reader users land on it.
       queueMicrotask(() => summaryRef.current?.focus());
       return;
     }
@@ -61,10 +60,13 @@ export function ContactForm({ content, email }: ContactFormProps) {
 
   if (status === "sent") {
     return (
-      <div role="status" className="rounded-md border border-success/40 bg-card p-8 text-center">
-        <CircleCheck aria-hidden="true" className="mx-auto size-10 text-success" />
-        <h3 className="mt-3 text-xl font-bold">{copy.successTitle}</h3>
-        <p className="mt-1 text-muted-foreground">{copy.successBody}</p>
+      <div
+        role="status"
+        className="shadow-hard rounded-xs border border-accent bg-accent-tint/30 p-8 text-center"
+      >
+        <CircleCheck aria-hidden="true" className="mx-auto size-10 text-accent" />
+        <h3 className="mt-3 font-display text-xl font-bold text-foreground">{copy.successTitle}</h3>
+        <p className="mt-1 font-body text-muted-foreground">{copy.successBody}</p>
       </div>
     );
   }
@@ -80,17 +82,20 @@ export function ContactForm({ content, email }: ContactFormProps) {
           tabIndex={-1}
           role="alert"
           aria-labelledby="form-error-title"
-          className="rounded-md border border-destructive bg-card p-4"
+          className="rounded-xs border border-destructive bg-card p-4"
         >
-          <h3 id="form-error-title" className="font-bold text-destructive">
+          <h3
+            id="form-error-title"
+            className="font-mono text-xs font-bold tracking-wider text-destructive uppercase"
+          >
             {msgs.summaryTitle}
           </h3>
-          <ul className="mt-2 list-disc space-y-1 pl-5 text-sm">
+          <ul className="mt-2 list-disc space-y-1 pl-5 font-mono text-xs text-foreground">
             {errorList.map((k) => (
               <li key={k}>
                 <a
                   href={`#contact-${k}`}
-                  className="font-medium underline"
+                  className="font-medium underline hover:text-accent"
                   onClick={(e) => {
                     e.preventDefault();
                     document.getElementById(`contact-${k}`)?.focus();
@@ -104,7 +109,7 @@ export function ContactForm({ content, email }: ContactFormProps) {
         </div>
       )}
 
-      {/* Honeypot: hidden from people and assistive tech; bots fill it in. */}
+      {/* Honeypot */}
       <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
         <label>
           Leave this field empty
@@ -138,35 +143,25 @@ export function ContactForm({ content, email }: ContactFormProps) {
         </Field>
       </div>
 
-      <Field id="contact-company" label={`${form.fields.company} (${form.optionalHint})`}>
-        {(a) => (
-          <Input
-            {...a}
-            name="company"
-            autoComplete="organization"
-            placeholder={form.placeholders.company}
-            value={values.company}
-            onChange={set("company")}
-          />
-        )}
-      </Field>
-
       <div className="grid gap-5 sm:grid-cols-2">
-        <Field
-          id="contact-projectType"
-          label={form.fields.projectType}
-          error={errors.projectType}
-          required
-        >
+        <Field id="contact-company" label={`${form.fields.company} (${form.optionalHint})`}>
           {(a) => (
-            <Select
+            <Input
               {...a}
-              name="projectType"
-              value={values.projectType}
-              onChange={set("projectType")}
-            >
+              name="company"
+              autoComplete="organization"
+              placeholder={form.placeholders.company}
+              value={values.company}
+              onChange={set("company")}
+            />
+          )}
+        </Field>
+
+        <Field id="contact-stage" label={form.fields.stage} error={errors.stage} required>
+          {(a) => (
+            <Select {...a} name="stage" value={values.stage} onChange={set("stage")}>
               <option value="">{form.selectPrompt}</option>
-              {form.projectTypes.map((o) => (
+              {form.stages.map((o) => (
                 <option key={o.value} value={o.label}>
                   {o.label}
                 </option>
@@ -174,6 +169,22 @@ export function ContactForm({ content, email }: ContactFormProps) {
             </Select>
           )}
         </Field>
+      </div>
+
+      <div className="grid gap-5 sm:grid-cols-2">
+        <Field id="contact-timeline" label={`${form.fields.timeline} (${form.optionalHint})`}>
+          {(a) => (
+            <Select {...a} name="timeline" value={values.timeline} onChange={set("timeline")}>
+              <option value="">{form.selectPrompt}</option>
+              {form.timelines.map((o) => (
+                <option key={o.value} value={o.label}>
+                  {o.label}
+                </option>
+              ))}
+            </Select>
+          )}
+        </Field>
+
         <Field id="contact-budget" label={`${form.fields.budget} (${form.optionalHint})`}>
           {(a) => (
             <Select {...a} name="budget" value={values.budget} onChange={set("budget")}>
@@ -188,11 +199,25 @@ export function ContactForm({ content, email }: ContactFormProps) {
         </Field>
       </div>
 
+      <Field id="contact-link" label={`${form.fields.link} (${form.optionalHint})`}>
+        {(a) => (
+          <Input
+            {...a}
+            name="link"
+            type="url"
+            placeholder={form.placeholders.link}
+            value={values.link}
+            onChange={set("link")}
+          />
+        )}
+      </Field>
+
       <Field id="contact-message" label={form.fields.message} error={errors.message} required>
         {(a) => (
           <Textarea
             {...a}
             name="message"
+            rows={5}
             placeholder={form.placeholders.message}
             value={values.message}
             onChange={set("message")}
@@ -203,31 +228,29 @@ export function ContactForm({ content, email }: ContactFormProps) {
       {status === "error" && (
         <div
           role="alert"
-          className="flex gap-3 rounded-md border border-destructive bg-card p-4 text-sm"
+          className="flex items-center gap-2 rounded-xs border border-destructive bg-card p-3 font-mono text-xs text-destructive"
         >
-          <CircleAlert aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-destructive" />
-          <div>
-            <p className="font-bold text-destructive">{copy.errorTitle}</p>
-            <p className="text-muted-foreground">{copy.errorBody}</p>
-          </div>
+          <CircleAlert aria-hidden="true" className="size-4 shrink-0" />
+          <span>
+            {copy.errorTitle}. {copy.errorBody}
+          </span>
         </div>
       )}
+
       {status === "mailto" && (
-        <p role="status" className="text-sm text-muted-foreground">
-          {copy.mailtoNote}
-        </p>
+        <p className="font-mono text-xs text-muted-foreground">{copy.mailtoNote}</p>
       )}
 
-      <Button type="submit" size="lg" disabled={sending} className="w-full sm:w-auto">
+      <Button type="submit" disabled={sending} variant="primary" size="lg" className="w-full">
         {sending ? (
           <>
-            <LoaderCircle aria-hidden="true" className="size-5 animate-spin" />
-            {form.sending}
+            <LoaderCircle aria-hidden="true" className="size-4 animate-spin" />
+            <span>{form.sending}</span>
           </>
         ) : status === "error" ? (
-          copy.retry
+          <span>{copy.retry}</span>
         ) : (
-          form.submit
+          <span>{form.submit} &rarr;</span>
         )}
       </Button>
     </form>

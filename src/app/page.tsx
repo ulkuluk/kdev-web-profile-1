@@ -1,42 +1,25 @@
-import { Audiences } from "@/components/sections/audiences/audiences";
-import { CaseStudy } from "@/components/sections/case-study/case-study";
-import { Contact } from "@/components/sections/contact/contact";
-import { Faq } from "@/components/sections/faq/faq";
 import { Hero } from "@/components/sections/hero/hero";
-import { UpNext } from "@/components/sections/next/up-next";
-import { Process } from "@/components/sections/process/process";
-import { Services } from "@/components/sections/services/services";
-import { Stack } from "@/components/sections/stack/stack";
-import { Team } from "@/components/sections/team/team";
-import {
-  audiences,
-  contact,
-  faq,
-  hero,
-  projects,
-  services,
-  site,
-  stack,
-  team,
-  upNext,
-  workflow,
-} from "@/content";
+import { Pillars } from "@/components/sections/pillars/pillars";
+import { FeaturedWork } from "@/components/sections/featured-work/featured-work";
+import { EngagementFlow } from "@/components/sections/engagement-flow/engagement-flow";
+import { CtaBanner } from "@/components/sections/cta-banner/cta-banner";
+import { hero, pillars, workflow, getFeaturedCaseStudy } from "@/content";
 
-/** Composition only: order of sections lives here, copy lives in src/content. */
+/**
+ * Home page (v2):
+ * Composes sections in order, passing strictly typed content data.
+ * No copy or business logic live in this component.
+ */
 export default function HomePage() {
-  const [featured] = projects.items;
+  const featured = getFeaturedCaseStudy();
+
   return (
     <>
-      <Hero hero={hero} steps={workflow.steps} />
-      <Audiences content={audiences} />
-      <Services content={services} />
-      {featured && <CaseStudy content={projects} project={featured} />}
-      <Process content={workflow} />
-      <Team content={team} />
-      <Stack content={stack} />
-      <UpNext content={upNext} />
-      <Faq content={faq} />
-      <Contact content={contact} site={site} />
+      <Hero hero={hero} />
+      <Pillars pillars={pillars} />
+      {featured && <FeaturedWork project={featured} />}
+      <EngagementFlow workflow={workflow} />
+      <CtaBanner />
     </>
   );
 }

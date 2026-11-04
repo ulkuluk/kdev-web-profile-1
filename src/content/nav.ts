@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 export const navSchema = z.object({
-  items: z.array(z.object({ label: z.string(), href: z.string().startsWith("#") })).min(1),
-  cta: z.object({ label: z.string(), href: z.string().startsWith("#") }),
+  items: z.array(z.object({ label: z.string(), href: z.string() })).min(1),
+  cta: z.object({ label: z.string(), href: z.string() }),
   /** Accessible names for icon buttons and landmarks. */
   labels: z.object({
     skipLink: z.string(),
@@ -17,14 +17,12 @@ export type NavContent = z.infer<typeof navSchema>;
 
 export const nav = navSchema.parse({
   items: [
-    { label: "Who we work with", href: "#clients" },
-    { label: "Services", href: "#services" },
-    { label: "Work", href: "#work" },
-    { label: "Process", href: "#process" },
-    { label: "Team", href: "#team" },
-    { label: "FAQ", href: "#faq" },
+    { label: "Services", href: "/services" },
+    { label: "Work", href: "/work" },
+    { label: "About", href: "/about" },
+    { label: "Contact", href: "/contact" },
   ],
-  cta: { label: "Start a project", href: "#contact" },
+  cta: { label: "Start MVP", href: "/contact" },
   labels: {
     skipLink: "Skip to main content",
     primaryNav: "Primary",

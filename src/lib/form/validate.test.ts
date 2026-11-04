@@ -6,19 +6,19 @@ const ok: FormValues = {
   ...emptyValues,
   name: "Ada",
   email: "ada@company.com",
-  projectType: "Web application",
+  stage: "Idea / Pre-seed",
   message: "We need a customer portal.",
 };
 const check = (v: Partial<FormValues>) => validateForm({ ...ok, ...v }, contact.errors);
 
 describe("validateForm", () => {
-  it("accepts a complete, valid form (company and budget are optional)", () => {
+  it("accepts a complete, valid form (company, timeline, budget and link are optional)", () => {
     expect(check({})).toEqual({});
   });
 
-  it("requires name, email, project type and message", () => {
+  it("requires name, email, stage and message", () => {
     const errors = validateForm(emptyValues, contact.errors);
-    expect(Object.keys(errors).sort()).toEqual(["email", "message", "name", "projectType"]);
+    expect(Object.keys(errors).sort()).toEqual(["email", "message", "name", "stage"]);
   });
 
   it("treats whitespace-only input as empty", () => {
