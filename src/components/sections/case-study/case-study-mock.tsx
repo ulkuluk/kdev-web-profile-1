@@ -8,47 +8,55 @@ import { Heart } from "lucide-react";
 export function CaseStudyMock() {
   return (
     <div aria-hidden="true" className="relative mx-auto w-full max-w-xl">
-      <div className="absolute -top-8 -right-6 size-48 rounded-full bg-secondary/25 blur-3xl" />
+      <div className="absolute -top-8 right-0 size-48 rounded-full bg-secondary/25 blur-3xl" />
 
       {/* Creator page */}
       <div className="glass relative rounded-lg p-4 sm:p-5">
         <div className="flex items-center gap-3">
           <div className="size-12 rounded-full bg-linear-to-br from-primary to-secondary" />
-          <div className="space-y-1.5">
-            <div className="h-3 w-32 rounded-full bg-foreground/80" />
-            <div className="h-2 w-20 rounded-full bg-muted-foreground/40" />
+          <div className="space-y-1">
+            <p className="text-sm font-bold">Creator profile</p>
+            <p className="text-xs text-muted-foreground">Digital illustration & tutorials</p>
           </div>
           <div className="ml-auto grid h-9 place-items-center rounded-sm bg-accent px-4 text-xs font-semibold text-on-accent">
             Support
           </div>
         </div>
+        <p className="mt-3 text-xs text-muted-foreground">
+          Weekly design breakdowns, process videos and custom asset packs.
+        </p>
         <div className="mt-4 grid grid-cols-3 gap-2">
-          {[0, 1, 2].map((i) => (
-            <div key={i} className="aspect-4/3 rounded-sm bg-muted" />
+          {["Video pack 04", "Asset library", "Process reel"].map((item) => (
+            <div
+              key={item}
+              className="flex aspect-4/3 items-end rounded-sm bg-muted p-2 font-mono text-[10px] text-muted-foreground"
+            >
+              {item}
+            </div>
           ))}
-        </div>
-        <div className="mt-4 space-y-2">
-          <div className="h-2 w-full rounded-full bg-muted-foreground/20" />
-          <div className="h-2 w-5/6 rounded-full bg-muted-foreground/20" />
         </div>
       </div>
 
       {/* Support flow */}
-      <div className="glass relative mt-4 ml-auto w-4/5 rounded-lg p-4 sm:-mt-8 sm:mr-[-1rem]">
-        <p className="font-mono text-xs text-muted-foreground">support / step 2</p>
+      <div className="glass relative mt-4 ml-auto w-4/5 rounded-lg p-4 sm:-mt-8">
+        <p className="font-mono text-xs text-muted-foreground">support · step 2</p>
         <div className="mt-3 grid grid-cols-3 gap-2">
-          {["", "", ""].map((_, i) => (
+          {["$10", "$25", "$50"].map((tier, i) => (
             <div
-              key={i}
+              key={tier}
               className={
                 i === 1
-                  ? "h-9 rounded-sm border-2 border-primary bg-primary/10"
-                  : "h-9 rounded-sm border border-border bg-card"
+                  ? "flex h-9 items-center justify-center rounded-sm border-2 border-primary bg-primary/10 font-mono text-xs font-bold text-primary"
+                  : "flex h-9 items-center justify-center rounded-sm border border-border bg-card font-mono text-xs text-muted-foreground"
               }
-            />
+            >
+              {tier}
+            </div>
           ))}
         </div>
-        <div className="mt-3 h-9 rounded-sm border border-border bg-card" />
+        <div className="mt-3 flex h-9 items-center rounded-sm border border-border bg-card px-3 font-mono text-xs text-muted-foreground">
+          Custom amount
+        </div>
         <div className="mt-3 flex h-10 items-center justify-center gap-2 rounded-sm bg-accent text-sm font-semibold text-on-accent">
           <Heart className="size-4" /> Send support
         </div>

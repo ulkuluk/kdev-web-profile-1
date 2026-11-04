@@ -21,7 +21,7 @@ export function Stack({ content }: { content: StackContent }) {
                 {group.items.map((item, j) => (
                   <li
                     key={`${item}-${j}`}
-                    className="rounded-full border border-border bg-background px-3 py-1 font-mono text-xs"
+                    className="rounded-full border border-border bg-card px-3 py-1 font-mono text-xs text-muted-foreground"
                   >
                     {item}
                   </li>

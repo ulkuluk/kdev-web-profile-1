@@ -42,15 +42,15 @@ export function Team({ content }: { content: TeamContent }) {
         {content.members.map((m, i) => (
           <li key={i} className="flex">
             <Reveal delay={(i % 4) * 0.06} className="flex w-full">
-              <Card className="flex w-full flex-col items-center text-center">
+              <Card className="flex w-full flex-col items-center py-8 text-center">
                 <span
                   aria-hidden="true"
-                  className="grid size-16 place-items-center rounded-full bg-linear-to-br from-primary to-secondary font-mono text-lg font-bold text-on-primary"
+                  className="grid size-16 place-items-center rounded-full bg-linear-to-br from-primary to-secondary font-mono text-lg font-bold text-on-primary ring-4 ring-primary/10"
                 >
                   {deriveInitials(m)}
                 </span>
-                <h3 className="mt-4 font-bold">{m.name}</h3>
-                <p className="text-sm text-muted-foreground">{m.role}</p>
+                <h3 className="mt-4 font-mono text-sm font-bold text-primary">{m.name}</h3>
+                <p className="mt-1 text-sm font-medium">{m.role}</p>
                 {(m.github || m.linkedin) && (
                   <div className="mt-2 flex gap-3">
                     {m.github && (

@@ -17,15 +17,17 @@ function ServiceCard({
   className?: string;
 }) {
   return (
-    <Card interactive className={cn("flex h-full flex-col", className)}>
-      <span className="mb-4 grid size-12 place-items-center rounded-sm bg-primary text-on-primary">
-        <Icon name={service.icon} className="size-6" />
-      </span>
-      <h3 className="text-2xl font-bold">{service.title}</h3>
-      <p className="mt-2 text-pretty text-muted-foreground">{service.summary}</p>
-      <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+    <Card interactive className={cn("flex h-full flex-col justify-between gap-6", className)}>
+      <div>
+        <span className="mb-4 grid size-12 place-items-center rounded-sm bg-primary text-on-primary">
+          <Icon name={service.icon} className="size-6" />
+        </span>
+        <h3 className="text-2xl font-bold">{service.title}</h3>
+        <p className="mt-2 text-pretty text-muted-foreground">{service.summary}</p>
+      </div>
+      <div className="space-y-4">
         <div>
-          <h4 className="font-mono text-xs font-medium tracking-wider text-primary uppercase">
+          <h4 className="font-mono text-xs font-semibold tracking-wider text-primary uppercase">
             {labels.deliverables}
           </h4>
           <ul className="mt-2 space-y-1.5 text-sm">
@@ -38,7 +40,7 @@ function ServiceCard({
           </ul>
         </div>
         <div>
-          <h4 className="font-mono text-xs font-medium tracking-wider text-primary uppercase">
+          <h4 className="font-mono text-xs font-semibold tracking-wider text-primary uppercase">
             {labels.useCases}
           </h4>
           <ul className="mt-2 space-y-1.5 text-sm">
